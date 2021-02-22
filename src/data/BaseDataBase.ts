@@ -6,40 +6,40 @@ dotenv.config()
 
 export abstract class BaseDatabase {
 
-   private static connection: Knex | null = null
-   
-   
-   protected TABLES_NAMES = {
-      users: "Users_FULLSTACK"
-   }
+    private static connection: Knex | null = null
 
-   protected getConnection(): Knex {
 
-      if (!BaseDatabase.connection) {
+    protected TABLES_NAMES = {
+        users: "Users_FULLSTACK"
+    }
 
-         BaseDatabase.connection = Knex({
-            client: "mysql",
-            connection: {
-               host: process.env.DB_HOST,
-               port: 3306,
-               user: process.env.DB_USER,
-               password: process.env.DB_PASSWORD,
-               database: process.env.DB_NAME,
-            },
+    protected getConnection(): Knex {
 
-         })
-      }
+        if (!BaseDatabase.connection) {
 
-      return BaseDatabase.connection
-   }
+            BaseDatabase.connection = Knex({
+                client: "mysql",
+                connection: {
+                    host: process.env.DB_HOST,
+                    port: 3306,
+                    user: process.env.DB_USER,
+                    password: process.env.DB_PASSWORD,
+                    database: process.env.DB_NAME,
+                },
 
-  
-   public static async destroyConnection(): Promise<void> {
+            })
+        }
 
-      if(BaseDatabase.connection) {
-         await BaseDatabase.connection.destroy()
-         BaseDatabase.connection = null
-      }
-   }
+        return BaseDatabase.connection
+    }
+
+
+    public static async destroyConnection(): Promise<void> {
+
+        if (BaseDatabase.connection) {
+            await BaseDatabase.connection.destroy()
+            BaseDatabase.connection = null
+        }
+    }
 }
 
