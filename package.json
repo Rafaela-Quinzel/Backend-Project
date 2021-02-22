@@ -29,7 +29,6 @@
     "@types/uuid": "^8.3.0"
   },
   "scripts": {
-    "setup": "tsc && node ./build/src/data/mySqlSetup.js",
     "dev": "clear && ts-node-dev ./src/index.ts",
     "start": "tsc && node ./build/src/index.js",
     "test": "clear && echo \"Running tests...\" && jest"
