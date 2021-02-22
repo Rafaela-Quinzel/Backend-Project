@@ -1,4 +1,4 @@
-import { BaseDatabase } from "./BaseDataBase"
+import { BaseDatabase } from "./BaseDatabase"
 import { User } from "../model/User"
 
 
