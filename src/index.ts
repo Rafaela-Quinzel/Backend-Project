@@ -1,5 +1,6 @@
 import express from "express"
 import { AddressInfo } from "net"
+import { musicRouter } from "./controller.ts/routes/musicRouter"
 import { userRouter } from "./controller.ts/routes/userRouter"
 
 
@@ -8,6 +9,7 @@ const app = express()
 app.use(express.json())
 
 app.use("/user", userRouter)
+app.use("/music", musicRouter)
 
 
 
