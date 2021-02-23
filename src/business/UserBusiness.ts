@@ -1,9 +1,11 @@
-import { UserInputDTO, LoginInputDTO, User } from "../model/User"
-import { UserDatabase } from "../data/UserDatabase"
+import { SignupInputDTO, LoginInputDTO, User } from "./entities/User"
+import { UserDatabase } from "../data/UserDataBase"
 import { IdGenerator } from "../services/IdGenerator"
 import { HashManager } from "../services/HashManager"
 import { Authenticator } from "../services/Authenticator"
-import { InvalidInputError } from "../errors/InvalidInputError"
+import { InvalidInputError } from "./errors/InvalidInputError"
+import { Validator } from "../services/Validator"
+import { NotFoundError } from "./errors/NotFoundError"
 
 
 
@@ -13,10 +15,12 @@ export class UserBusiness {
         private userDatabase: UserDatabase,
         private idGenerator: IdGenerator,
         private hashManager: HashManager,
-        private authenticator: Authenticator
+        private authenticator: Authenticator,
+        private validator: Validator
     ) { }
 
-    async createUser(user: UserInputDTO) { 
+    
+    async createUser(user: SignupInputDTO) { 
 
         if (!user.email || !user.name || !user.nickname || !user.password ) {
             throw new InvalidInputError("Invalid input to signUp")
@@ -34,7 +38,7 @@ export class UserBusiness {
 
         const hashPassword = await this.hashManager.hash(user.password)
 
-        await this.userDatabase.createUser(
+        await this.userDatabase.insertUser(
             User.toUserModel({
                 ...user,
                 id: userId,
@@ -49,18 +53,23 @@ export class UserBusiness {
 
 
 
-    async authUserByEmail(user: LoginInputDTO) { 
+    async authUserByEmail(input: LoginInputDTO) { 
 
-        if (!user.email || !user.password )
-        throw new InvalidInputError("Invalid input to login")
+        const { email, password } = input
+        this.validator.validateEmptyProperties(input)
+        this.validator.validatePassword(password)
+
+        const userFromDB = await this.userDatabase.selectUserByEmail("email", email)
+
+        if (!userFromDB)
+        throw new NotFoundError("Invalid input to login")
+
+        const hashCompare = await this.hashManager.compare(password, userFromDB.getPassword())
 
 
-        if (user.email.indexOf("@") === -1) {
+        if (email.indexOf("@") === -1) {
             throw new InvalidInputError("Invalid email format")
         }
-
-        const userFromDB = await this.userDatabase.getUserByEmail(user.email)
-        const hashCompare = await this.hashManager.compare(user.password, userFromDB.getPassword())
 
         if (!hashCompare) {
             throw new InvalidInputError("Invalid password")

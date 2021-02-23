@@ -48,19 +48,19 @@ export class User {
     }
 
 
-    static toUserModel(user: any): User {
+    static toUserModel(obj: any): User {
         return new User(
-            user.id,
-            user.name,
-            user.email,
-            user.nickname,
-            user.password
+            obj.id,
+            obj.name,
+            obj.email,
+            obj.nickname,
+            obj.password
         )
     }
 
 }
 
-export interface UserInputDTO {
+export interface SignupInputDTO {
     name: string
     email: string
     nickname: string
