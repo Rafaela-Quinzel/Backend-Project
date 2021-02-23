@@ -26,14 +26,14 @@ export class UserDatabase extends BaseDatabase {
     }
 
 
-    public async selectUserByEmail(key: string, value: string): Promise<User> {
+    public async selectUserByEmail(email: string): Promise<User> {
 
         try {
 
             const result = await this.getConnection()
                 .select("*")
                 .from(this.TABLES_NAMES.users)
-                .where({ key, value })
+                .where({ email })
 
             return User.toUserModel(result[0])
 

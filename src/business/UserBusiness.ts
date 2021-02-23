@@ -59,7 +59,7 @@ export class UserBusiness {
         this.validator.validateEmptyProperties(input)
         this.validator.validatePassword(password)
 
-        const userFromDB = await this.userDatabase.selectUserByEmail("email", email)
+        const userFromDB = await this.userDatabase.selectUserByEmail(email)
 
         if (!userFromDB)
         throw new NotFoundError("Invalid input to login")

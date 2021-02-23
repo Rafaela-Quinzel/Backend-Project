@@ -1,12 +1,13 @@
 import express from "express"
 import { AddressInfo } from "net"
+import { userRouter } from "./controller.ts/routes/userRouter"
 
 
 const app = express()
 
 app.use(express.json())
 
-// app.use("/", )
+app.use("/user", userRouter)
 
 
 
