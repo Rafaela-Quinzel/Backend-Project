@@ -5,6 +5,7 @@ import { Validator } from "../services/Validator"
 import { MusicDatabase } from "../data/MusicDatabase"
 import { Genre, Music, MusicInputDTO, MusicOutputDTO } from "./entities/Music"
 import { NotFoundError } from "./errors/NotFoundError"
+import { InvalidInputError } from "./errors/InvalidInputError"
 
 
 
@@ -56,28 +57,44 @@ export class MusicBusiness {
 
         const userData = this.authenticator.getData(token)
 
-        const musics = await this.musicDatabase.selectMusicsById(userData.id)
+        const musics = await this.musicDatabase.selectMusicsByUser(userData.id)
 
         if (!musics) {
             throw new NotFoundError("Musics not found")
         }
 
-        const musicsOutputDTO = musics.map((music: any) => {
-            const genres = music.getGenre().map((genre: any) => genre.name)
+        const musicsOutputDTO = musics.map((music) => {
+
+            const genres = music.getGenre().map(genre => genre.name)
+
             return {
-                id: music.id,
-                title: music.title,
-                author: music.author,
-                date: music.date,
-                file: music.file,
-                genres: genres,
-                album: music.album,
-                user_id: music.user_id
+                id: music.getId(),
+                title: music.getTitle(),
+                author: music.getAuthor(),
+                date: music.getDate(),
+                file: music.getFile(),
+                genre: genres,
+                album: music.getAlbum(),
+                user_id: music.getUserId()
 
             }
         })
 
         return musicsOutputDTO
+
+    }
+
+    async getMusicById(token: string, id: string): Promise<Music> {
+
+        this.authenticator.getData(token)
+
+        const music: Music = await this.musicDatabase.selectMusicById(id)
+
+        if (!music) {
+            throw new InvalidInputError("Music not found")
+        }
+
+        return music
 
     }
 }

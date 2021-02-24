@@ -5,7 +5,7 @@ import { MySqlError } from "../business/errors/MySqlError"
 
 
 export class MusicDatabase extends BaseDatabase {
-   
+
 
 
     public async insertMusics(music: Music): Promise<void> {
@@ -56,6 +56,7 @@ export class MusicDatabase extends BaseDatabase {
             const musicResult = await this.getConnection()
                 .select('*')
                 .where({ user_id: userId })
+                .from(this.TABLES_NAMES.musics)
 
             const musics: Music[] = []
 
@@ -70,33 +71,35 @@ export class MusicDatabase extends BaseDatabase {
                     WHERE ${this.TABLES_NAMES.musics}.id = '${music.id}'
                 `)
 
-                const genres: Genre[] = [];
-                
+                const genres: Genre[] = []
+
                 for (let genre of genreResult[0]) {
-                    genres.push({ 
+                    genres.push({
                         id: genre.id,
-                        name: genre.name 
-                    });
-                };
+                        name: genre.name
+                    })
+                }
 
-                musics.push(Music.toMusicModel(musicResult[0], genres));
+                musics.push(Music.toMusicModel(musicResult[0], genres))
 
-            };  
+            }
 
-            return musics;
+            return musics
+
         } catch (error) {
-            throw new MySqlError(500, error.message);
-        };
-    };
+            throw new MySqlError(500, error.message)
+        }
+    }
 
 
-    public async selectMusicsById(id: string): Promise<Music> {
+    public async selectMusicById(id: string): Promise<Music> {
 
         try {
 
             const musicResult = await this.getConnection()
                 .select("*")
                 .where({ id })
+                .from(this.TABLES_NAMES.musics)
 
 
             const genres: Genre[] = []
@@ -108,7 +111,7 @@ export class MusicDatabase extends BaseDatabase {
               ON ${this.TABLES_NAMES.music_genre}.music_id = ${this.TABLES_NAMES.musics}.id
               JOIN ${this.TABLES_NAMES.genres}
               ON ${this.TABLES_NAMES.genres}.id = ${this.TABLES_NAMES.music_genre}.genre_id
-              WHERE ${this.TABLES_NAMES.musics}.id = ${id}
+              WHERE ${this.TABLES_NAMES.musics}.id = '${id}'
             `)
 
             for (let genre of genreResult[0]) {

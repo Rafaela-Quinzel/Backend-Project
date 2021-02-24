@@ -104,11 +104,11 @@ export interface MusicOutputDTO {
     id: string,
     title: string,
     author: string,
-    date: string,
+    date: Date,
     file: string,
     genre: string[],
     album: string,
-    userId: string
+    user_id: string
 }
 
 
