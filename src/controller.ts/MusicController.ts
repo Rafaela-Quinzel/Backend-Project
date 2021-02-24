@@ -64,4 +64,27 @@ export class MusicController {
             await MusicDatabase.destroyConnection()
         }
     }
+
+
+    async getMusicById(req: Request, res: Response): Promise<void> {
+
+        try {
+
+            const token = req.headers.authorization as string
+
+            const id = req.params.id
+
+            const result = await musicBusiness.getMusicById(token, id)
+
+            res.status(201).send(result)
+
+        } catch (error) {
+            res
+                .status(error.statusCode || 400)
+                .send({ error: error.message })
+
+        } finally {
+            await MusicDatabase.destroyConnection()
+        }
+    }
 }
