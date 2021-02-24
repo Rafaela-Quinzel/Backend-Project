@@ -1,4 +1,5 @@
 export class Music {
+
     constructor(
         private id: string,
         private title: string,
@@ -71,12 +72,13 @@ export class Music {
         this.user_id = user_id
     }
 
-    public static toMusic(music: any, genres: Genre[]): Music {
+    
+    public static toMusicModel(music: any, genres: Genre[]): Music {
         return music && new Music(
             music.id,
             music.title,
             music.author,
-            music.data,
+            music.date,
             music.file,
             genres,
             music.album,
@@ -102,7 +104,7 @@ export interface MusicOutputDTO {
     id: string,
     title: string,
     author: string,
-    date: number,
+    date: string,
     file: string,
     genre: string[],
     album: string,

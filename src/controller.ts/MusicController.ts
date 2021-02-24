@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { MusicInputDTO } from "../business/entities/Music"
+import { MusicInputDTO, MusicOutputDTO } from "../business/entities/Music"
 import { MusicBusiness } from "../business/MusicBusiness"
 import { MusicDatabase } from "../data/MusicDatabase"
 import { Authenticator } from "../services/Authenticator"
@@ -33,6 +33,27 @@ export class MusicController {
             await musicBusiness.createMusic(token, input)
 
             res.status(201).send("Music inserted successfully")
+
+        } catch (error) {
+            res
+                .status(error.statusCode || 400)
+                .send({ error: error.message })
+
+        } finally {
+            await MusicDatabase.destroyConnection()
+        }
+    }
+
+
+    async getMusics(req: Request, res: Response): Promise<void> {
+
+        try {
+
+            const token = req.headers.authorization as string
+
+            const result: MusicOutputDTO[] = await musicBusiness.getMusics(token)
+
+            res.status(201).send(result)
 
         } catch (error) {
             res
