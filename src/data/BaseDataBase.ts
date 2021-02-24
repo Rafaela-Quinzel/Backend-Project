@@ -10,7 +10,10 @@ export abstract class BaseDatabase {
 
 
     protected TABLES_NAMES = {
-        users: "Users_FULLSTACK"
+        users: "Users_FULLSTACK",
+        musics: "Musics_FULLSTACK",
+        genres: "Genre_FULLSTACK",
+        music_genre: "Music_Genre_FULLSTACK"
     }
 
     protected getConnection(): Knex {

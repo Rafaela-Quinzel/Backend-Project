@@ -1,11 +1,12 @@
-import { BaseDatabase } from "./BaseDatabase"
-import { User } from "../model/User"
+import { BaseDatabase } from "./BaseDataBase"
+import { User } from "../business/entities/User"
+import { MySqlError } from "../business/errors/MySqlError"
 
 
 
 export class UserDatabase extends BaseDatabase {
 
-    public async createUser(user: User): Promise<void> {
+    public async insertUser(user: User): Promise<void> {
 
         try {
             await this.getConnection()
@@ -19,12 +20,13 @@ export class UserDatabase extends BaseDatabase {
                 .into(this.TABLES_NAMES.users)
 
         } catch (error) {
-            throw new Error(error.sqlMessage || error.message)
+            const errorInfo = MySqlError.duplicateEntryHandler(error.message)
+            throw new MySqlError(errorInfo.statusCode, errorInfo.message)
         }
     }
 
 
-    public async getUserByEmail(email: string): Promise<User> {
+    public async selectUserByEmail(email: string): Promise<User> {
 
         try {
 
@@ -36,7 +38,8 @@ export class UserDatabase extends BaseDatabase {
             return User.toUserModel(result[0])
 
         } catch (error) {
-            throw new Error(error.sqlMessage || error.message)
+            console.log(error.message)
+            throw new MySqlError()
         }
     }
 }
