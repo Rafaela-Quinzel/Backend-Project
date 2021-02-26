@@ -2,27 +2,26 @@ import * as jwt from "jsonwebtoken"
 
 
 export class Authenticator {
-    public generateToken(input: AuthenticationData,
-        expiresIn: string = process.env.ACCESS_TOKEN_EXPIRES_IN!): string {
 
-        const token = jwt.sign(
-            {
-                id: input.id
-            },
+    private defaultExpiresIn: string | number = isNaN(Number(process.env.JWT_EXPIRES_IN)) ? process.env.JWT_EXPIRES_IN! : Number(process.env.JWT_EXPIRES_IN)
+    
+    public generateToken = (
+        input: AuthenticationData,
+        expiresIn: string | number = this.defaultExpiresIn
+
+    ):  string => {
+        return jwt.sign(
+            input,
             process.env.JWT_KEY as string,
-            {
-                expiresIn,
-            }
+            { expiresIn }
         )
-
-        return token
     }
 
-    public getData(token: string): AuthenticationData {
-        const payload = jwt.verify(token, process.env.JWT_KEY as string) as any
+    public getData = (token: string): AuthenticationData => {
+
+        const payload = jwt.verify(token, process.env.JWT_KEY as string) as AuthenticationData
         const result = {
-            id: payload.id,
-            role: payload.role
+            id: payload.id
         }
 
         return result
