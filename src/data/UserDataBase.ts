@@ -42,4 +42,5 @@ export class UserDatabase extends BaseDatabase {
             throw new MySqlError()
         }
     }
+
 }

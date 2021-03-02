@@ -55,7 +55,6 @@ export class UserController {
                 password: req.body.password
             }
 
-
             const token = await userBusiness.authUserByEmail(loginData)
 
             res.status(200).send({ token })
