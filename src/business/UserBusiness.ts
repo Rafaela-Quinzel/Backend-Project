@@ -98,9 +98,7 @@ export class UserBusiness {
 
             return {
                 accessToken,
-                user: {
-                    nickname: user
-                }
+                user
             }
 
         } catch (error) {
