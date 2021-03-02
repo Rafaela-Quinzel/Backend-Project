@@ -19,82 +19,102 @@ export class MusicBusiness {
     ) { }
 
 
+
     async createMusic(token: string, input: MusicInputDTO) {
 
-        const tokenData = this.authenticator.getData(token)
+        try {
 
-        const { title, author, file, genre, album } = input
-        this.validator.validateEmptyProperties(input)
+            const tokenData = this.authenticator.getData(token)
 
-        const id: string = this.idGenerator.generate()
+            const { title, author, file, genre, album } = input
+            this.validator.validateEmptyProperties(input)
 
-        const today: Date = new Date()
+            const id: string = this.idGenerator.generate()
 
-        const genres: Genre[] = genre.map(genre => {
-            return {
-                id: this.idGenerator.generate(),
-                name: genre
-            }
-        })
+            const today: Date = new Date()
 
-        const music: Music = new Music(
-            id,
-            title,
-            author,
-            today,
-            file,
-            genres,
-            album,
-            tokenData.id
-        )
+            const genres: Genre[] = genre.map(genre => {
+                return {
+                    id: this.idGenerator.generate(),
+                    name: genre
+                }
+            })
 
-        await this.musicDatabase.insertMusics(music)
+            const music: Music = new Music(
+                id,
+                title,
+                author,
+                today,
+                file,
+                genres,
+                album,
+                tokenData.id
+            )
 
-        return music
+            await this.musicDatabase.insertMusics(music)
+
+            return music
+
+        } catch (error) {
+            throw new Error(error.message)
+        }
     }
 
     async getMusics(token: string): Promise<MusicOutputDTO[]> {
 
-        const userData = this.authenticator.getData(token)
+        try {
 
-        const musics = await this.musicDatabase.selectMusicsByUser(userData.id)
+            const userData = this.authenticator.getData(token)
 
-        if (!musics) {
-            throw new NotFoundError("Musics not found")
-        }
+            const musics = await this.musicDatabase.selectMusicsByUser(userData.id)
 
-        const musicsOutputDTO = musics.map((music) => {
-
-            const genres = music.getGenre().map(genre => genre.name)
-
-            return {
-                id: music.getId(),
-                title: music.getTitle(),
-                author: music.getAuthor(),
-                date: music.getDate(),
-                file: music.getFile(),
-                genre: genres,
-                album: music.getAlbum(),
-                user_id: music.getUserId()
-
+            if (!musics) {
+                throw new NotFoundError("Musics not found")
             }
-        })
 
-        return musicsOutputDTO
+            const musicsOutputDTO = musics.map((music) => {
+
+                const genres = music.getGenre().map(genre => genre.name)
+
+                return {
+                    id: music.getId(),
+                    title: music.getTitle(),
+                    author: music.getAuthor(),
+                    date: music.getDate(),
+                    file: music.getFile(),
+                    genre: genres,
+                    album: music.getAlbum(),
+                    user_id: music.getUserId()
+
+                }
+            })
+
+            return musicsOutputDTO
+
+        } catch (error) {
+            throw new Error(error.message)
+
+        }
 
     }
 
     async getMusicById(token: string, id: string): Promise<Music> {
 
-        this.authenticator.getData(token)
+        try {
 
-        const music: Music = await this.musicDatabase.selectMusicById(id)
+            this.authenticator.getData(token)
 
-        if (!music) {
-            throw new InvalidInputError("Music not found")
+            const music: Music = await this.musicDatabase.selectMusicById(id)
+
+            if (!music) {
+                throw new InvalidInputError("Music not found")
+            }
+
+            return music
+
+        } catch (error) {
+            throw new Error(error.message)
         }
-
-        return music
 
     }
 }

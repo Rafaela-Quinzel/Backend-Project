@@ -53,7 +53,7 @@ export class MusicController {
 
             const result: MusicOutputDTO[] = await musicBusiness.getMusics(token)
 
-            res.status(201).send(result)
+            res.status(200).send(result)
 
         } catch (error) {
             res

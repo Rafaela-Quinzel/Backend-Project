@@ -8,10 +8,11 @@ export class MySqlError extends Error {
     }
 
     public static duplicateEntryHandler = (errorMessage: string) => {
-        let message: string = ""
+        
+        let message: string = "Email or nickname already registered"
 
         if (errorMessage.toLowerCase().includes("Duplicate entry")) {
-            message = "Email or nickname already registered"
+            message 
         }
 
         return {
