@@ -1,6 +1,6 @@
 import { SignupInputDTO } from "../../src/business/entities/User"
 import { UserBusiness } from "../../src/business/UserBusiness"
-import { Validator } from "../../src/services/Validator"
+
 
 const userDatabase = { insertUser: jest.fn() } as any
 
