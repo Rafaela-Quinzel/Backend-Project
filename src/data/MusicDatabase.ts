@@ -79,4 +79,26 @@ export class MusicDatabase extends BaseDatabase {
             throw new MySqlError(errorInfo.statusCode, errorInfo.message)
         }
     }
+
+    public async deleteMusic(id: string): Promise<void> {
+
+        try {
+
+            await this.getConnection().raw(`
+                  DELETE 
+                  FROM ${this.TABLES_NAMES.musics}
+                  WHERE id = '${id}';
+               `)
+
+            await await this.getConnection().raw(`
+                  DELETE 
+                  FROM ${this.TABLES_NAMES.music_genre}
+                  WHERE music_id = '${id}';
+               `)
+            
+        } catch (error) {
+            const errorInfo = MySqlError.duplicateEntryHandler(error.message)
+            throw new MySqlError(errorInfo.statusCode, errorInfo.message)
+        }
+    }
 }

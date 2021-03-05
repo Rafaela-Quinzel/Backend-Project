@@ -7,6 +7,7 @@ import { IdGenerator } from "../services/IdGenerator"
 import { Validator } from "../services/Validator"
 
 
+
 const musicBusiness = new MusicBusiness(
     new MusicDatabase(),
     new IdGenerator(),
@@ -16,7 +17,7 @@ const musicBusiness = new MusicBusiness(
 
 export class MusicController {
 
-    async createMusic(req: Request, res: Response): Promise<void> {
+    public async createMusic(req: Request, res: Response): Promise<void> {
 
         try {
 
@@ -39,13 +40,11 @@ export class MusicController {
                 .status(error.statusCode || 400)
                 .send({ error: error.message })
 
-        } finally {
-            await MusicDatabase.destroyConnection()
         }
     }
 
 
-    async getMusics(req: Request, res: Response): Promise<void> {
+    public async getMusics(req: Request, res: Response): Promise<void> {
 
         try {
 
@@ -60,13 +59,11 @@ export class MusicController {
                 .status(error.statusCode || 400)
                 .send({ error: error.message })
 
-        } finally {
-            await MusicDatabase.destroyConnection()
         }
     }
 
 
-    async getMusicById(req: Request, res: Response): Promise<void> {
+    public async getMusicById(req: Request, res: Response): Promise<void> {
 
         try {
 
@@ -83,8 +80,25 @@ export class MusicController {
                 .status(error.statusCode || 400)
                 .send({ error: error.message })
 
-        } finally {
-            await MusicDatabase.destroyConnection()
+        }
+    }
+
+    public async delMusicById(req: Request, res: Response) {
+
+        try {
+
+            const token  = req.headers.authorization as string
+
+            const {id}  = req.params 
+
+            const result = await musicBusiness.deleteMusicById(id, token)
+
+            res.status(200).send(result)
+
+        } catch (error) {
+            res
+                .status(error.statusCode || 400)
+                .send("deu errado")
         }
     }
 }
