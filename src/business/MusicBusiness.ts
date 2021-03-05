@@ -10,6 +10,9 @@ import { InvalidInputError } from "./errors/InvalidInputError"
 
 
 export class MusicBusiness {
+    deleteMusic(id: string, token: string) {
+        throw new Error("Method not implemented.")
+    }
 
     constructor(
         private musicDatabase: MusicDatabase,
@@ -117,4 +120,19 @@ export class MusicBusiness {
         }
 
     }
+
+    public async deleteMusicById(id: string, token: string) {
+
+        try {
+
+           this.authenticator.getData(token)
+           
+           await this.musicDatabase.deleteMusic(id) as any
+
+           return { message: "Music deleted" }
+
+        } catch (error) {
+            throw new Error(error.message)
+        }
+     }
 }
