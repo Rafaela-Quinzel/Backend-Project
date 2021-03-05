@@ -89,16 +89,16 @@ export class MusicController {
 
             const token  = req.headers.authorization as string
 
-            const {id}  = req.params 
+            const id = req.params.id 
 
-            const result = await musicBusiness.deleteMusicById(id, token)
+            await musicBusiness.deleteMusicById(id, token)
 
-            res.status(200).send(result)
+            res.status(200).send("Music deleted")
 
         } catch (error) {
             res
                 .status(error.statusCode || 400)
-                .send("deu errado")
+                .send({ error: error.message })
         }
     }
 }

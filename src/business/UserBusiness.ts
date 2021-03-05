@@ -7,7 +7,6 @@ import { InvalidInputError } from "./errors/InvalidInputError"
 import { Validator } from "../services/Validator"
 import { NotFoundError } from "./errors/NotFoundError"
 import { MySqlError } from "./errors/MySqlError"
-import { BaseError } from "./errors/BaseError"
 
 
 
@@ -27,7 +26,7 @@ export class UserBusiness {
         try {
 
             if (!user.email || !user.name || !user.nickname || !user.password) {
-                throw new InvalidInputError("Invalid input to signUp")
+                throw new InvalidInputError("Invalid input to signup")
             }
 
             if (user.email.indexOf("@") === -1) {
@@ -35,7 +34,7 @@ export class UserBusiness {
             }
 
             if (user.password && user.password.length < 6) {
-                throw new InvalidInputError("Password should have more than 6 digits")
+                throw new InvalidInputError("The password must contain more than 6 digits")
             }
 
 

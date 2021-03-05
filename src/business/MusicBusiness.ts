@@ -10,10 +10,7 @@ import { InvalidInputError } from "./errors/InvalidInputError"
 
 
 export class MusicBusiness {
-    deleteMusic(id: string, token: string) {
-        throw new Error("Method not implemented.")
-    }
-
+   
     constructor(
         private musicDatabase: MusicDatabase,
         private idGenerator: IdGenerator,

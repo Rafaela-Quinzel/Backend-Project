@@ -84,18 +84,18 @@ export class MusicDatabase extends BaseDatabase {
 
         try {
 
-            await this.getConnection().raw(`
-                  DELETE 
-                  FROM ${this.TABLES_NAMES.musics}
-                  WHERE id = '${id}';
-               `)
-
             await await this.getConnection().raw(`
-                  DELETE 
-                  FROM ${this.TABLES_NAMES.music_genre}
-                  WHERE music_id = '${id}';
-               `)
-            
+               DELETE 
+               FROM ${this.TABLES_NAMES.music_genre}
+               WHERE music_id = '${id}';
+            `)
+
+            await this.getConnection().raw(`
+                DELETE 
+                FROM ${this.TABLES_NAMES.musics}
+                WHERE id = '${id}';
+            `)
+
         } catch (error) {
             const errorInfo = MySqlError.duplicateEntryHandler(error.message)
             throw new MySqlError(errorInfo.statusCode, errorInfo.message)
