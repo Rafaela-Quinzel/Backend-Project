@@ -21,7 +21,7 @@ export class UserBusiness {
     ) { }
 
 
-    async createUser(user: SignupInputDTO) {
+    public async createUser(user: SignupInputDTO) {
 
         try {
 
@@ -67,7 +67,7 @@ export class UserBusiness {
 
 
 
-    async authUserByEmail(input: LoginInputDTO) {
+    public async authUserByEmail(input: LoginInputDTO) {
 
         try {
 
