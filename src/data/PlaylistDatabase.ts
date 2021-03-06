@@ -54,7 +54,7 @@ export class PlaylistDatabase extends BaseDatabase {
 
             await this.getConnection()
             .insert({
-                id: id,
+                music_id: id,
                 playlist_id: playlistId,
             })
             .into(this.TABLES_NAMES.playlists_tracks)
