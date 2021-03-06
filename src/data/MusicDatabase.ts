@@ -61,13 +61,15 @@ export class MusicDatabase extends BaseDatabase {
     }
 
 
-    public async selectMusicById(id: string): Promise<Music> {
+    public async selectMusicById(id: string, userId: string): Promise<Music> {
 
         try {
 
             const musicResult = await this.getConnection()
                 .select("*")
                 .where({ id })
+                .and
+                .where({ user_id: userId})
                 .from(this.TABLES_NAMES.musics)
 
             const genres = await this.genreDataBase.selectGenreByMusic(id)
@@ -75,8 +77,7 @@ export class MusicDatabase extends BaseDatabase {
             return Music.toMusicModel(musicResult[0], genres)
 
         } catch (error) {
-            const errorInfo = MySqlError.duplicateEntryHandler(error.message)
-            throw new MySqlError(errorInfo.statusCode, errorInfo.message)
+            throw new MySqlError(500, error.message)
         }
     }
 
@@ -97,8 +98,7 @@ export class MusicDatabase extends BaseDatabase {
             `)
 
         } catch (error) {
-            const errorInfo = MySqlError.duplicateEntryHandler(error.message)
-            throw new MySqlError(errorInfo.statusCode, errorInfo.message)
+            throw new MySqlError(500, error.message)
         }
     }
 }

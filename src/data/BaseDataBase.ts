@@ -13,7 +13,9 @@ export abstract class BaseDatabase {
         users: "Users_FULLSTACK",
         musics: "Musics_FULLSTACK",
         genres: "Genre_FULLSTACK",
-        music_genre: "Music_Genre_FULLSTACK"
+        music_genre: "Music_Genre_FULLSTACK",
+        playlists: "Playlists_FULLSTACK",
+        playlists_tracks: "Playlists_tracks_FULLSTACK"
     }
 
     protected getConnection(): Knex {

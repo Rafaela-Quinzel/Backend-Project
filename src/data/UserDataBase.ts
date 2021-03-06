@@ -38,7 +38,6 @@ export class UserDatabase extends BaseDatabase {
             return User.toUserModel(result[0])
 
         } catch (error) {
-            console.log(error.message)
             throw new MySqlError()
         }
     }

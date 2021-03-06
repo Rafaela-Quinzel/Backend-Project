@@ -1,4 +1,3 @@
-
 import { IdGenerator } from "../services/IdGenerator"
 import { Authenticator } from "../services/Authenticator"
 import { Validator } from "../services/Validator"
@@ -20,7 +19,7 @@ export class MusicBusiness {
 
 
 
-    async createMusic(token: string, input: MusicInputDTO) {
+    public async createMusic(token: string, input: MusicInputDTO) {
 
         try {
 
@@ -60,7 +59,7 @@ export class MusicBusiness {
         }
     }
 
-    async getMusics(token: string): Promise<MusicOutputDTO[]> {
+    public async getMusics(token: string): Promise<MusicOutputDTO[]> {
 
         try {
 
@@ -98,7 +97,7 @@ export class MusicBusiness {
 
     }
 
-    async getMusicById(token: string, id: string): Promise<Music> {
+    public async getMusicById(token: string, id: string): Promise<Music> {
 
         try {
 
