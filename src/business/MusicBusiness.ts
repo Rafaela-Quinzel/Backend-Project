@@ -5,11 +5,12 @@ import { MusicDatabase } from "../data/MusicDatabase"
 import { Genre, Music, MusicInputDTO, MusicOutputDTO } from "./entities/Music"
 import { NotFoundError } from "./errors/NotFoundError"
 import { InvalidInputError } from "./errors/InvalidInputError"
+import { GenreDatabase } from "../data/GenreDatabase"
 
 
 
 export class MusicBusiness {
-   
+
     constructor(
         private musicDatabase: MusicDatabase,
         private idGenerator: IdGenerator,
@@ -101,9 +102,9 @@ export class MusicBusiness {
 
         try {
 
-            this.authenticator.getData(token)
+            const userData = this.authenticator.getData(token)
 
-            const music: Music = await this.musicDatabase.selectMusicById(id)
+            const music: Music = await this.musicDatabase.selectMusicById(id, userData.id)
 
             if (!music) {
                 throw new InvalidInputError("Music not found")
@@ -121,14 +122,33 @@ export class MusicBusiness {
 
         try {
 
-           this.authenticator.getData(token)
-           
-           await this.musicDatabase.deleteMusic(id) as any
+            this.authenticator.getData(token)
 
-           return { message: "Music deleted" }
+            await this.musicDatabase.deleteMusic(id) as any
+
+            return { message: "Music deleted" }
 
         } catch (error) {
             throw new Error(error.message)
         }
-     }
+    }
+
+    public async getAllGenres(): Promise<string[]> {
+
+        try {
+
+            const genreDatabase = new GenreDatabase()
+
+            const genres = await genreDatabase.selectAllGenres()
+
+            if (!genres) {
+                throw new NotFoundError("No genres found")
+            }
+
+            return genres
+
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
 }

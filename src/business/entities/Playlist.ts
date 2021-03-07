@@ -57,8 +57,9 @@ export interface PlaylistInputDTO {
     subtitle: string,
 }
 
+
 export interface AddTrackInputDTO {
-    id: string,
+    music_id: string,
     playlist_id: string
 }
 

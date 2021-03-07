@@ -2,6 +2,7 @@ import { BaseDatabase } from "./BaseDataBase"
 import { Music } from "../business/entities/Music"
 import { MySqlError } from "../business/errors/MySqlError"
 import { GenreDatabase } from "./GenreDatabase"
+import { NotFoundError } from "../business/errors/NotFoundError"
 
 
 
@@ -80,6 +81,7 @@ export class MusicDatabase extends BaseDatabase {
             throw new MySqlError(500, error.message)
         }
     }
+
 
     public async deleteMusic(id: string): Promise<void> {
 

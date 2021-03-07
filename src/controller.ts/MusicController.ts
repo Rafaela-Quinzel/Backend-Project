@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { MusicInputDTO, MusicOutputDTO } from "../business/entities/Music"
+import { Genre, MusicInputDTO, MusicOutputDTO } from "../business/entities/Music"
 import { MusicBusiness } from "../business/MusicBusiness"
 import { MusicDatabase } from "../data/MusicDatabase"
 import { Authenticator } from "../services/Authenticator"
@@ -99,6 +99,21 @@ export class MusicController {
             res
                 .status(error.statusCode || 400)
                 .send({ error: error.message })
+        }
+    }
+
+    public async getAllGenres(req: Request, res: Response):Promise<void> {
+
+        try {
+
+            const result: string[] = await musicBusiness.getAllGenres()
+
+            res.status(200).send(result)
+
+        } catch (error) {
+            res
+                .status(error.statusCode || 400)
+                .send({ message: error.message })
         }
     }
 }
