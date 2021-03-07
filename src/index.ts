@@ -3,6 +3,7 @@ import cors from "cors"
 import { AddressInfo } from "net"
 import { musicRouter } from "./controller.ts/routes/musicRouter"
 import { userRouter } from "./controller.ts/routes/userRouter"
+import { playlistRouter } from "./controller.ts/routes/playlistRouter"
 
 
 const app: Express = express()
@@ -12,6 +13,7 @@ app.use(cors())
 
 app.use("/user", userRouter)
 app.use("/music", musicRouter)
+app.use("/playlist", playlistRouter)
 
 
 

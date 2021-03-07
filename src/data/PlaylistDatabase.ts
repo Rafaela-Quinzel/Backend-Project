@@ -1,12 +1,13 @@
 import { BaseDatabase } from "./BaseDataBase"
 import { MySqlError } from "../business/errors/MySqlError"
 import { Playlist } from "../business/entities/Playlist"
+import { PlaylistBusiness } from "../business/PlaylistBusiness"
 
 
 
 export class PlaylistDatabase extends BaseDatabase {
 
-   
+
 
     public async insertPlaylist(playlist: Playlist): Promise<void> {
 
@@ -16,7 +17,7 @@ export class PlaylistDatabase extends BaseDatabase {
                 .insert({
                     id: playlist.getId(),
                     title: playlist.getTitle(),
-                    author: playlist.getSubtitle(),
+                    subtitle: playlist.getSubtitle(),
                     date: playlist.getDate(),
                     user_id: playlist.getUserId()
                 })
@@ -25,6 +26,28 @@ export class PlaylistDatabase extends BaseDatabase {
         } catch (error) {
             const errorInfo = MySqlError.duplicateEntryHandler(error.message)
             throw new MySqlError(errorInfo.statusCode, errorInfo.message)
+        }
+    }
+
+    public async selectUserPlaylists(userId: string): Promise<Playlist[]> {
+
+        try {
+
+            const result = await this.getConnection()
+                .select("*")
+                .where({ user_id: userId })
+                .from(this.TABLES_NAMES.playlists)
+
+            const playlists: Playlist[] = []
+
+            for(let playlist of result) {
+                playlists.push(Playlist.toPlaylistModel(playlist))
+            }
+
+            return playlists
+
+        } catch (error) {
+            throw new MySqlError(500, error.message)
         }
     }
 
@@ -37,7 +60,7 @@ export class PlaylistDatabase extends BaseDatabase {
                 .select("*")
                 .where({ id })
                 .and
-                .where({ user_id: userId})
+                .where({ user_id: userId })
                 .from(this.TABLES_NAMES.playlists)
 
             return Playlist.toPlaylistModel(playlistResult[0])
@@ -48,20 +71,19 @@ export class PlaylistDatabase extends BaseDatabase {
     }
 
 
-    public async insertTrackToPlaylist(id: string, playlistId: string) {
+    public async insertTrackToPlaylist(musicId: string, playlistId: string) {
 
         try {
 
             await this.getConnection()
-            .insert({
-                id: id,
-                playlist_id: playlistId,
-            })
-            .into(this.TABLES_NAMES.playlists_tracks)
+                .insert({
+                    music_id: musicId ,
+                    playlist_id: playlistId  
+                })
+                .into(this.TABLES_NAMES.playlists_tracks)
 
         } catch (error) {
-            const errorInfo = MySqlError.duplicateEntryHandler(error.message)
-            throw new MySqlError(errorInfo.statusCode, errorInfo.message)
+            throw new MySqlError(500, error.message)
         }
     }
 

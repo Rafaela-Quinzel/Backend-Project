@@ -58,10 +58,10 @@ export class PlaylistBusiness {
 
             const tokenData = this.authenticator.getData(token)
             
-            const { id, playlist_id } = input
+            const { music_id, playlist_id } = input
             this.validator.validateEmptyProperties(input)
 
-            const music: Music = await this.musicDatabase.selectMusicById(id, tokenData.id)
+            const music: Music = await this.musicDatabase.selectMusicById(music_id, tokenData.id)
 
             if (!music) {
                 throw new NotFoundError("Music not found")
@@ -73,7 +73,7 @@ export class PlaylistBusiness {
                 throw new NotFoundError("Playlist not found")
             }
 
-            await this.playlistDatabase.insertTrackToPlaylist(id, playlist_id)
+            await this.playlistDatabase.insertTrackToPlaylist(music_id, playlist_id)
 
 
         } catch (error) {
@@ -83,13 +83,34 @@ export class PlaylistBusiness {
 
     }
 
-    async getPlaylistById(token: string, id: string): Promise<Playlist> {
+    public async getUserPlaylists(token: string): Promise<Playlist[]> {
+
+        try {
+
+            const userData = this.authenticator.getData(token)
+
+            const playlists = await this.playlistDatabase.selectUserPlaylists(userData.id)
+
+            if (!playlists) {
+                throw new NotFoundError("Playlist not found")
+            }
+
+            return playlists
+
+        } catch (error) {
+            throw new Error(error.message)
+
+        }
+
+    }
+
+    async getPlaylistById(token: string, id: string) {
 
         try {
 
             this.authenticator.getData(token)
 
-            const playlist: Playlist = await this.playlistDatabase.selectPlaylistById(token, id)
+            const playlist = await this.playlistDatabase.selectPlaylistById(id, token)
 
             if (!playlist) {
                 throw new InvalidInputError("Playlist not found")

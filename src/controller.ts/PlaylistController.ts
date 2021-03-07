@@ -52,13 +52,31 @@ export class PlaylistController {
             const token = req.headers.authorization as string
 
             const input: AddTrackInputDTO = {
-                id: req.params.id,
-                playlist_id: req.params.playlist_id
+                music_id: req.body.music_id,
+                playlist_id: req.body.playlist_id
             }
 
             await playlistBusiness.addTrackToPlaylist(token, input)
 
             res.status(200).send("Track added successfully")
+
+        } catch (error) {
+            res
+                .status(error.statusCode || 400)
+                .send({ error: error.message })
+
+        }
+    }
+
+    public async getUserPlaylists(req: Request, res: Response): Promise<void> {
+
+        try {
+
+            const token = req.headers.authorization as string
+
+            const result = await playlistBusiness.getUserPlaylists(token)
+
+            res.status(200).send(result)
 
         } catch (error) {
             res
@@ -77,7 +95,7 @@ export class PlaylistController {
 
             const id = req.params.id
 
-            const result = await playlistBusiness.getPlaylistById(token, id)
+            const result = await playlistBusiness.getPlaylistById(id, token)
 
             res.status(201).send(result)
 
@@ -89,13 +107,15 @@ export class PlaylistController {
         }
     }
 
-    public async delMusicById(req: Request, res: Response) {
+
+
+    public async delPlaylistById(req: Request, res: Response) {
 
         try {
 
-            const token  = req.headers.authorization as string
+            const token = req.headers.authorization as string
 
-            const id = req.params.id 
+            const id = req.params.id
 
             await playlistBusiness.deletePlaylistById(id, token)
 

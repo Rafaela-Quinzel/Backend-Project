@@ -31,3 +31,21 @@ CREATE TABLE IF NOT EXISTS Music_Genre_FULLSTACK (
     FOREIGN KEY (music_id) REFERENCES Musics_FULLSTACK(id),
     FOREIGN KEY (genre_id) REFERENCES Genre_FULLSTACK(id)
 );
+
+
+CREATE TABLE IF NOT EXISTS Playlists_FULLSTACK (
+    id VARCHAR(255) PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    subtitle VARCHAR(255) NOT NULL,
+    date DATE NOT NULL,
+    user_id VARCHAR(255) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES Users_FULLSTACK(id)
+);
+
+
+CREATE TABLE IF NOT EXISTS Playlist_tracks_FULLSTACK (
+    music_id VARCHAR(255) NOT NULL ,
+    playlist_id VARCHAR(255) NOT NULL,
+    FOREIGN KEY (music_id) REFERENCES Musics_FULLSTACK(id)
+    FOREIGN KEY (playlist_id) REFERENCES Playlists_FULLSTACK(id)
+);

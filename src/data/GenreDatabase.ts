@@ -11,34 +11,62 @@ export class GenreDatabase extends BaseDatabase {
         }
     }
 
-    public insertMusicGenres = async (
+    public async insertMusicGenres(
         genres: Genre[],
         musicId: string
-    ): Promise<void> => {
+    ): Promise<void> {
+
         try {
+
             for (let genre of genres) {
-                await this.getConnection()(this.TABLES_NAMES.genres)
+                await this.getConnection()
                     .insert({
                         id: genre.id,
                         name: genre.name
                     })
+                    .into(this.TABLES_NAMES.genres)
 
-                await this.getConnection()(this.TABLES_NAMES.music_genre)
+                await this.getConnection()
                     .insert({
                         music_id: musicId,
                         genre_id: genre.id
                     })
+                    .into(this.TABLES_NAMES.music_genre)
             }
 
         } catch (error) {
-            throw new MySqlError(500, error.message);
+            throw new MySqlError(500, error.message)
         }
     }
 
-    public selectGenreByMusic = async (
-        musicId: string
-    ): Promise<Genre[]> => {
+
+    public async selectAllGenres(): Promise<string[]> {
+        
         try {
+
+            const result = await this.getConnection()
+                .select("*")
+                .from(this.TABLES_NAMES.genres)
+
+            const genres: string[] = []
+
+            for (let genre of result) {
+                result && genres.push(genre.name)
+            }
+
+            return genres
+
+        } catch (error) {
+            throw new MySqlError(500, error.message)
+        }
+    }
+
+    public async selectGenreByMusic(
+        musicId: string
+    ): Promise<Genre[]> {
+
+        try {
+
             const genreResult = await this.getConnection().raw(`
                 SELECT genre_id as id, name
                 FROM ${this.TABLES_NAMES.genres}
