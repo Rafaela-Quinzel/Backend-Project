@@ -6,6 +6,7 @@ import { Genre, Music, MusicInputDTO, MusicOutputDTO } from "./entities/Music"
 import { NotFoundError } from "./errors/NotFoundError"
 import { InvalidInputError } from "./errors/InvalidInputError"
 import { GenreDatabase } from "../data/GenreDatabase"
+import { Playlist } from "./entities/Playlist"
 
 
 
@@ -118,6 +119,26 @@ export class MusicBusiness {
 
     }
 
+
+    public async getMusicByTitle(token: string, title: string) {
+
+        try {
+
+            const userData = this.authenticator.getData(token)
+
+            const music = await this.musicDatabase.selectMusicByTitle(title)
+
+         
+
+            return music
+
+        } catch (error) {
+            throw new Error(error.message)
+        }
+
+    }
+
+
     public async deleteMusicById(id: string, token: string) {
 
         try {
@@ -127,6 +148,22 @@ export class MusicBusiness {
             await this.musicDatabase.deleteMusic(id) as any
 
             return { message: "Music deleted" }
+
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
+
+
+    public async removeMusicFromPlaylist(music_id: string, playlist: string[], token: string) {
+
+        try {
+
+            this.authenticator.getData(token)
+
+            await this.musicDatabase.deleteMusicFromPlaylist(music_id, playlist) as any
+
+            return { message: "Removed from playlist" }
 
         } catch (error) {
             throw new Error(error.message)

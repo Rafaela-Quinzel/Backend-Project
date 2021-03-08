@@ -2,7 +2,6 @@ import { BaseDatabase } from "./BaseDataBase"
 import { Music } from "../business/entities/Music"
 import { MySqlError } from "../business/errors/MySqlError"
 import { GenreDatabase } from "./GenreDatabase"
-import { NotFoundError } from "../business/errors/NotFoundError"
 
 
 
@@ -70,12 +69,30 @@ export class MusicDatabase extends BaseDatabase {
                 .select("*")
                 .where({ id })
                 .and
-                .where({ user_id: userId})
+                .where({ user_id: userId })
                 .from(this.TABLES_NAMES.musics)
 
             const genres = await this.genreDataBase.selectGenreByMusic(id)
 
             return Music.toMusicModel(musicResult[0], genres)
+
+        } catch (error) {
+            throw new MySqlError(500, error.message)
+        }
+    }
+
+
+    public async selectMusicByTitle(title: string) {
+
+        try {
+
+            const musicResult = await this.getConnection()
+                .select("*")
+                .where({ title })
+                .from(this.TABLES_NAMES.musics)
+
+
+            return musicResult
 
         } catch (error) {
             throw new MySqlError(500, error.message)
@@ -97,6 +114,23 @@ export class MusicDatabase extends BaseDatabase {
                 DELETE 
                 FROM ${this.TABLES_NAMES.musics}
                 WHERE id = '${id}';
+            `)
+
+        } catch (error) {
+            throw new MySqlError(500, error.message)
+        }
+    }
+
+
+    public async deleteMusicFromPlaylist(music_id: string, playlist: string[]): Promise<void> {
+
+        try {
+
+            await this.getConnection().raw(`
+               DELETE 
+               FROM ${this.TABLES_NAMES.playlists_tracks}
+               WHERE music_id = "${music_id}"
+               AND playlist_id= "${playlist}"
             `)
 
         } catch (error) {

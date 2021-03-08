@@ -1,7 +1,5 @@
 import { Request, Response } from "express"
-import { MusicInputDTO, MusicOutputDTO } from "../business/entities/Music"
-import { AddTrackInputDTO, Playlist, PlaylistInputDTO } from "../business/entities/Playlist"
-import { MusicBusiness } from "../business/MusicBusiness"
+import { PlaylistInputDTO } from "../business/entities/Playlist"
 import { PlaylistBusiness } from "../business/PlaylistBusiness"
 import { MusicDatabase } from "../data/MusicDatabase"
 import { PlaylistDatabase } from "../data/PlaylistDatabase"
@@ -49,16 +47,15 @@ export class PlaylistController {
 
         try {
 
-            const token = req.headers.authorization as string
+            const { playlist } = req.query as any
+    
+            const music_id = req.params.id as any
 
-            const input: AddTrackInputDTO = {
-                music_id: req.body.music_id,
-                playlist_id: req.body.playlist_id
-            }
+            const token: string = req.headers.authorization as string
+            
+            const result = await playlistBusiness.addTrackToPlaylist(music_id, playlist, token)
 
-            await playlistBusiness.addTrackToPlaylist(token, input)
-
-            res.status(200).send("Track added successfully")
+            res.status(200).send(result)
 
         } catch (error) {
             res
@@ -67,6 +64,7 @@ export class PlaylistController {
 
         }
     }
+
 
     public async getUserPlaylists(req: Request, res: Response): Promise<void> {
 
