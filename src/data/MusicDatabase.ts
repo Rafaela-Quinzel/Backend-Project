@@ -86,12 +86,25 @@ export class MusicDatabase extends BaseDatabase {
 
         try {
 
-            const musicResult = await this.getConnection()
-                .select("*")
-                .where({ title })
-                .from(this.TABLES_NAMES.musics)
-
-
+            const musicResult = await this.getConnection().raw(`
+            SELECT *
+            FROM ${this.TABLES_NAMES.musics}
+            WHERE title = '${title}' LIKE %${title}%;
+         `)
+            // .select("*")
+            // .from(this.TABLES_NAMES.musics)
+            // .where({ title })
+           
+            
+        //     .raw(`
+        //     SELECT *
+        //     FROM ${this.TABLES_NAMES.musics}
+        //     WHERE title = '${title}';
+        //  `)
+                // .select("*")
+                // .from(this.TABLES_NAMES.musics)
+                // .where({ title })
+                
             return musicResult
 
         } catch (error) {
