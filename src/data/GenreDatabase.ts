@@ -41,19 +41,20 @@ export class GenreDatabase extends BaseDatabase {
 
 
     public async selectAllGenres(): Promise<string[]> {
-        
+
         try {
 
             const result = await this.getConnection()
-                .select("*")
-                .from(this.TABLES_NAMES.genres)
+            .select("name")
+            .from(this.TABLES_NAMES.genres)
+           
 
             const genres: string[] = []
 
             for (let genre of result) {
                 result && genres.push(genre.name)
             }
-
+            
             return genres
 
         } catch (error) {
@@ -61,6 +62,7 @@ export class GenreDatabase extends BaseDatabase {
         }
     }
 
+    
     public async selectGenreByMusic(
         musicId: string
     ): Promise<Genre[]> {

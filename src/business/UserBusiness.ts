@@ -75,7 +75,7 @@ export class UserBusiness {
             this.validator.validateEmptyProperties(input)
             this.validator.validatePassword(password)
 
-            const userFromDB = await this.userDatabase.selectUserByEmail(email)
+            const userFromDB = await this.userDatabase.selectUserByEmail(input.email)
 
             if (!userFromDB)
                 throw new NotFoundError("Invalid input to login")
@@ -93,7 +93,9 @@ export class UserBusiness {
 
             const accessToken = this.authenticator.generateToken({ id: userFromDB.getId() })
 
-            return accessToken
+            const username = userFromDB.getName()
+
+            return {accessToken, username}
 
         } catch (error) {
             throw new Error(error.message)
