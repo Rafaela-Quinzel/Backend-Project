@@ -1,8 +1,6 @@
 import { BaseDatabase } from "./BaseDataBase"
 import { MySqlError } from "../business/errors/MySqlError"
 import { Playlist } from "../business/entities/Playlist"
-import { PlaylistBusiness } from "../business/PlaylistBusiness"
-
 
 
 export class PlaylistDatabase extends BaseDatabase {
@@ -40,7 +38,7 @@ export class PlaylistDatabase extends BaseDatabase {
 
             const playlists: Playlist[] = []
 
-            for(let playlist of result) {
+            for (let playlist of result) {
                 playlists.push(Playlist.toPlaylistModel(playlist))
             }
 
@@ -71,16 +69,14 @@ export class PlaylistDatabase extends BaseDatabase {
     }
 
 
-    public async insertTrackToPlaylist(musicId: string, playlistId: string) {
+    public async insertTrackToPlaylist(music_id: string, playlist_id: string) {
 
         try {
 
-            await this.getConnection()
-                .insert({
-                    music_id: musicId ,
-                    playlist_id: playlistId  
-                })
-                .into(this.TABLES_NAMES.playlists_tracks)
+            await this.getConnection().raw(`
+            INSERT INTO ${this.TABLES_NAMES.playlists_tracks}
+            VALUES ("${music_id}", "${playlist_id}")
+         `)
 
         } catch (error) {
             throw new MySqlError(500, error.message)

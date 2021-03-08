@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { Genre, MusicInputDTO, MusicOutputDTO } from "../business/entities/Music"
+import { MusicInputDTO, MusicOutputDTO } from "../business/entities/Music"
 import { MusicBusiness } from "../business/MusicBusiness"
 import { MusicDatabase } from "../data/MusicDatabase"
 import { Authenticator } from "../services/Authenticator"
@@ -83,6 +83,28 @@ export class MusicController {
         }
     }
 
+
+    public async getMusicByTitle(req: Request, res: Response): Promise<void> {
+
+        try {
+
+            const token = req.headers.authorization as string
+
+            const title = req.query.title as string
+
+            const result = await musicBusiness.getMusicByTitle(token, title)
+
+            res.status(201).send(result)
+
+        } catch (error) {
+            res
+                .status(error.statusCode || 400)
+                .send({ error: error.message })
+
+        }
+    }
+
+
     public async delMusicById(req: Request, res: Response) {
 
         try {
@@ -101,6 +123,29 @@ export class MusicController {
                 .send({ error: error.message })
         }
     }
+
+
+    public async removeMusicFromPlaylist(req: Request, res: Response) {
+
+        try {
+
+            const token  = req.headers.authorization as string
+
+            const { playlist } = req.query as any
+
+            const music_id = req.params.id as any
+
+            await musicBusiness.removeMusicFromPlaylist(music_id, playlist, token)
+
+            res.status(200).send("Music deleted")
+
+        } catch (error) {
+            res
+                .status(error.statusCode || 400)
+                .send({ error: error.message })
+        }
+    }
+
 
     public async getAllGenres(req: Request, res: Response):Promise<void> {
 
