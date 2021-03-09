@@ -87,10 +87,9 @@ export class MusicController {
     public async getMusicByTitle(req: Request, res: Response) {
 
         try {
+            const { title } = req.query as any
 
             const token = req.headers.authorization as string
-
-            const { title } = req.query as any
 
             const result = await musicBusiness.getMusicByTitle(title, token)
 

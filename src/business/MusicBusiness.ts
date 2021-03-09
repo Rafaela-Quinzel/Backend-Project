@@ -111,8 +111,6 @@ export class MusicBusiness {
                 throw new InvalidInputError("Music not found")
             }
 
-            console.log(music)
-
             return music
 
         } catch (error) {
@@ -122,23 +120,23 @@ export class MusicBusiness {
     }
 
 
-    public async getMusicByTitle(token: string, title: string) {
+    public async getMusicByTitle(title: string, token: string) {
 
         try {
 
             this.authenticator.getData(token)
 
-            const music = await this.musicDatabase.selectMusicByTitle(title) as any
+            const result = await this.musicDatabase.selectMusicByTitle(title) as any
 
             if (!title) {
                 throw new InvalidInputError(`"title" is required!`)
             }
 
-            if (!music) {
+            if (!result.length) {
                 throw new InvalidInputError("Music not found")
             }
 
-            return music
+            return result
 
         } catch (error) {
             throw new Error(error.message)

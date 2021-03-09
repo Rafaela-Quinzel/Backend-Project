@@ -11,7 +11,7 @@ import { AddTrackInputDTO, Playlist, PlaylistInputDTO } from "./entities/Playlis
 
 
 export class PlaylistBusiness {
-   
+
     constructor(
         private musicDatabase: MusicDatabase,
         private playlistDatabase: PlaylistDatabase,
@@ -57,7 +57,7 @@ export class PlaylistBusiness {
         try {
 
             this.authenticator.getData(token)
-            
+
             if (!music_id) {
                 throw new NotFoundError("Music not found")
             }
@@ -107,7 +107,7 @@ export class PlaylistBusiness {
 
             this.authenticator.getData(token)
 
-            const playlist = await this.playlistDatabase.selectPlaylistById(id, token)
+            const playlist = await this.playlistDatabase.selectPlaylistById(id)
 
             if (!playlist) {
                 throw new InvalidInputError("Playlist not found")
@@ -121,18 +121,44 @@ export class PlaylistBusiness {
 
     }
 
-    public async deletePlaylistById(id: string, token: string) {
+    public async getPlaylistByTitle(title: string, token: string) {
 
         try {
 
-           this.authenticator.getData(token)
-           
-           await this.playlistDatabase.deletePlaylist(id) as any
+            this.authenticator.getData(token)
 
-           return { message: "Playlist deleted" }
+            const resultMusic = await this.playlistDatabase.selectPlaylistByTitle(title) 
+
+            if (!title) {
+                throw new InvalidInputError(`"title" is required!`)
+            }
+
+            if (!resultMusic) {
+                throw new InvalidInputError("Playlist not found")
+            }
+
+            this.authenticator.getData(token)
+
+            return resultMusic
 
         } catch (error) {
             throw new Error(error.message)
         }
-     }
+
+    }
+
+    public async deletePlaylistById(id: string, token: string) {
+
+        try {
+
+            this.authenticator.getData(token)
+
+            await this.playlistDatabase.deletePlaylist(id) as any
+
+            return { message: "Playlist deleted" }
+
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
 }

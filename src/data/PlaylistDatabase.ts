@@ -6,7 +6,6 @@ import { Playlist } from "../business/entities/Playlist"
 export class PlaylistDatabase extends BaseDatabase {
 
 
-
     public async insertPlaylist(playlist: Playlist): Promise<void> {
 
         try {
@@ -50,18 +49,33 @@ export class PlaylistDatabase extends BaseDatabase {
     }
 
 
-    public async selectPlaylistById(id: string, userId: string): Promise<Playlist> {
+    public async selectPlaylistById(id: string): Promise<Playlist> {
 
         try {
 
             const playlistResult = await this.getConnection()
                 .select("*")
                 .where({ id })
-                .and
-                .where({ user_id: userId })
                 .from(this.TABLES_NAMES.playlists)
 
             return Playlist.toPlaylistModel(playlistResult[0])
+
+        } catch (error) {
+            throw new MySqlError(500, error.message)
+        }
+    }
+
+    
+    public async selectPlaylistByTitle(title: string) {
+
+        try {
+
+            const result = await this.getConnection()
+            .select("*")
+            .from(this.TABLES_NAMES.playlists)
+            .where({title})
+           
+            return result
 
         } catch (error) {
             throw new MySqlError(500, error.message)
