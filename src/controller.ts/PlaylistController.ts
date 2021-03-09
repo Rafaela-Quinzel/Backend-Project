@@ -89,9 +89,9 @@ export class PlaylistController {
 
         try {
 
-            const token = req.headers.authorization as string
+            const {id} = req.params
 
-            const id = req.params.id
+            const token = req.headers.authorization as string
 
             const result = await playlistBusiness.getPlaylistById(token, id)
 

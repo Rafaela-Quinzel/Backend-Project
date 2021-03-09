@@ -101,13 +101,14 @@ export class PlaylistBusiness {
 
     }
 
+
     async getPlaylistById(token: string, id: string) {
 
         try {
 
             this.authenticator.getData(token)
 
-            const playlist = await this.playlistDatabase.selectPlaylistById(id)
+            const playlist = await this.playlistDatabase.selectPlaylistById(id) as any
 
             if (!playlist) {
                 throw new InvalidInputError("Playlist not found")
