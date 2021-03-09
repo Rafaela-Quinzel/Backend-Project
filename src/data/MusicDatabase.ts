@@ -86,26 +86,12 @@ export class MusicDatabase extends BaseDatabase {
 
         try {
 
-            const musicResult = await this.getConnection().raw(`
-            SELECT *
-            FROM ${this.TABLES_NAMES.musics}
-            WHERE title = '${title}' LIKE %${title}%;
-         `)
-            // .select("*")
-            // .from(this.TABLES_NAMES.musics)
-            // .where({ title })
+            const result  = await this.getConnection()
+            .select("*")
+            .from(this.TABLES_NAMES.musics)
+            .where({title})
            
-            
-        //     .raw(`
-        //     SELECT *
-        //     FROM ${this.TABLES_NAMES.musics}
-        //     WHERE title = '${title}';
-        //  `)
-                // .select("*")
-                // .from(this.TABLES_NAMES.musics)
-                // .where({ title })
-                
-            return musicResult
+            return result
 
         } catch (error) {
             throw new MySqlError(500, error.message)
@@ -116,6 +102,12 @@ export class MusicDatabase extends BaseDatabase {
     public async deleteMusic(id: string): Promise<void> {
 
         try {
+
+            await this.getConnection().raw(`
+            DELETE 
+            FROM ${this.TABLES_NAMES.playlists_tracks}
+            WHERE music_id = '${id}';
+        `)
 
             await await this.getConnection().raw(`
                DELETE 
@@ -128,6 +120,8 @@ export class MusicDatabase extends BaseDatabase {
                 FROM ${this.TABLES_NAMES.musics}
                 WHERE id = '${id}';
             `)
+
+        
 
         } catch (error) {
             throw new MySqlError(500, error.message)

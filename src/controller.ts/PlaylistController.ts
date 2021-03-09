@@ -93,7 +93,28 @@ export class PlaylistController {
 
             const id = req.params.id
 
-            const result = await playlistBusiness.getPlaylistById(id, token)
+            const result = await playlistBusiness.getPlaylistById(token, id)
+
+            res.status(201).send(result)
+
+        } catch (error) {
+            res
+                .status(error.statusCode || 400)
+                .send({ error: error.message })
+
+        }
+    }
+
+    public async getPlaylistByTitle(req: Request, res: Response) {
+
+        try {
+
+            const {title} = req.query as any
+
+            const token = req.headers.authorization as string
+
+            const result = await playlistBusiness.getPlaylistByTitle(title, token)
+            
 
             res.status(201).send(result)
 
