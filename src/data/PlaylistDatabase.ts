@@ -49,32 +49,39 @@ export class PlaylistDatabase extends BaseDatabase {
     }
 
 
-    public async selectPlaylistById(id: string): Promise<Playlist> {
+    public async selectPlaylistById(id: string): Promise<any | undefined> {
 
         try {
 
-            const playlistResult = await this.getConnection()
-                .select("*")
-                .where({ id })
-                .from(this.TABLES_NAMES.playlists)
+            const result = await this.getConnection().raw(`
+              SELECT *
+              FROM ${this.TABLES_NAMES.musics} mfs
+              LEFT JOIN ${this.TABLES_NAMES.playlists_tracks} ptf ON mfs.id = ptf.music_id
+              WHERE ptf.playlist_id = "${id}";
+           `)
 
-            return Playlist.toPlaylistModel(playlistResult[0])
+            const playlist = await this.getConnection().raw(`
+              SELECT * FROM ${this.TABLES_NAMES.playlists}
+              WHERE id = "${id}";
+           `)
+
+            return ([playlist[0], result[0]])
 
         } catch (error) {
-            throw new MySqlError(500, error.message)
+            throw new Error(error.sqlMessage || error.message)
         }
     }
-
     
+
     public async selectPlaylistByTitle(title: string) {
 
         try {
 
             const result = await this.getConnection()
-            .select("*")
-            .from(this.TABLES_NAMES.playlists)
-            .where({title})
-           
+                .select("*")
+                .from(this.TABLES_NAMES.playlists)
+                .where({ title })
+
             return result
 
         } catch (error) {
