@@ -43,28 +43,26 @@ export class PlaylistController {
     }
 
 
-    public async addTrackToPlaylist(req: Request, res: Response): Promise<void> {
+    public async addTrackToPlaylist(req: Request, res: Response) {
 
         try {
+            const { playlist } = req.query as any
+
+            const music_id = req.params.id as any
 
             const token: string = req.headers.authorization as string
 
-            const input: AddTrackInputDTO = {
-                music_id: req.body.music_id,
-                playlist_id: req.body.playlist_id
-            }
-            
-            await playlistBusiness.addTrackToPlaylist(token, input)
+            const result = await playlistBusiness.addTrackToPlaylist(music_id, playlist, token)
 
-            res.status(200).send('Track added successfuly')
+            res.status(200).send(result)
 
         } catch (error) {
             res
                 .status(error.statusCode || 400)
                 .send({ error: error.message })
-
         }
     }
+
 
 
     public async getUserPlaylists(req: Request, res: Response): Promise<void> {

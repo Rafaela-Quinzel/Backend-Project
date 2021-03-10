@@ -83,13 +83,14 @@ export class PlaylistDatabase extends BaseDatabase {
     }
 
 
-    public async insertTrackToPlaylist(music_id: string, playlist_id: string) {
+
+    public async insertTrackToPlaylist(music_id: string, playlist: string) {
 
         try {
 
             await this.getConnection().raw(`
             INSERT INTO ${this.TABLES_NAMES.playlists_tracks}
-            VALUES ("${music_id}", "${playlist_id}")
+            VALUES ("${music_id}", "${playlist}")
          `)
 
         } catch (error) {

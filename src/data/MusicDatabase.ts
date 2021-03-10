@@ -81,6 +81,26 @@ export class MusicDatabase extends BaseDatabase {
         }
     }
 
+    
+    public async addToPlaylist(music_id: string, playlist_id: string): Promise<void> {
+
+        try {
+
+            let i
+
+            for (i = 0; i < playlist_id.length; i++) {
+
+                await this.getConnection().raw(`
+                 INSERT INTO ${this.TABLES_NAMES.playlists_tracks}
+                 VALUES ("${music_id}", "${playlist_id[i]}")
+              `)
+            }
+
+        } catch (error) {
+            throw new Error(error.sqlMessage || error.message)
+        }
+    }
+
 
     public async deleteMusic(id: string): Promise<void> {
 
