@@ -99,6 +99,7 @@ export class MusicBusiness {
 
     }
 
+
     public async getMusicById(token: string, id: string): Promise<Music> {
 
         try {
@@ -112,31 +113,6 @@ export class MusicBusiness {
             }
 
             return music
-
-        } catch (error) {
-            throw new Error(error.message)
-        }
-
-    }
-
-
-    public async getMusicByTitle(title: string, token: string) {
-
-        try {
-
-            this.authenticator.getData(token)
-
-            const result = await this.musicDatabase.selectMusicByTitle(title) as any
-
-            if (!title) {
-                throw new InvalidInputError(`"title" is required!`)
-            }
-
-            if (!result.length) {
-                throw new InvalidInputError("Music not found")
-            }
-
-            return result
 
         } catch (error) {
             throw new Error(error.message)
@@ -175,6 +151,7 @@ export class MusicBusiness {
             throw new Error(error.message)
         }
     }
+    
 
     public async getAllGenres(): Promise<string[]> {
 

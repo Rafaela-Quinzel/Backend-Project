@@ -82,23 +82,6 @@ export class MusicDatabase extends BaseDatabase {
     }
 
 
-    public async selectMusicByTitle(title: string) {
-
-        try {
-
-            const result  = await this.getConnection()
-            .select("*")
-            .from(this.TABLES_NAMES.musics)
-            .where({title})
-           
-            return result
-
-        } catch (error) {
-            throw new MySqlError(500, error.message)
-        }
-    }
-
-
     public async deleteMusic(id: string): Promise<void> {
 
         try {
@@ -120,8 +103,6 @@ export class MusicDatabase extends BaseDatabase {
                 FROM ${this.TABLES_NAMES.musics}
                 WHERE id = '${id}';
             `)
-
-        
 
         } catch (error) {
             throw new MySqlError(500, error.message)

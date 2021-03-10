@@ -44,11 +44,9 @@ export class GenreDatabase extends BaseDatabase {
 
         try {
 
-            const result = await this.getConnection()
-            .select("name")
-            .from(this.TABLES_NAMES.genres)
-           
-
+            const result = await this.getConnection()(this.TABLES_NAMES.genres)
+            .distinct("name")
+       
             const genres: string[] = []
 
             for (let genre of result) {

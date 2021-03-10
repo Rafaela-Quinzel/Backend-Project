@@ -52,23 +52,34 @@ export class PlaylistBusiness {
     }
 
 
-    public async addTrackToPlaylist(music_id: string, playlist: string, token: string) {
+    public async addTrackToPlaylist(token: string, input: AddTrackInputDTO) {
 
         try {
 
-            this.authenticator.getData(token)
+            const tokenData = this.authenticator.getData(token)
 
-            if (!music_id) {
-                throw new NotFoundError("Music not found")
+            const { music_id, playlist_id } = input
+            this.validator.validateEmptyProperties(input)
+
+
+            const music: Music = await this.musicDatabase.selectMusicById(
+                music_id,
+                tokenData.id
+            )
+
+            if (!music) {
+                throw new InvalidInputError('Music not found')
             }
+
+            const playlist: Playlist = await this.playlistDatabase.selectPlaylistById(
+                playlist_id
+            )
 
             if (!playlist) {
-                throw new NotFoundError("Playlist not found")
+                throw new InvalidInputError('Playlist not found')
             }
 
-            await this.playlistDatabase.insertTrackToPlaylist(music_id, playlist)
-
-            return { message: "Added to Collections" }
+            await this.playlistDatabase.insertTrackToPlaylist(music_id, playlist_id)
 
 
         } catch (error) {
@@ -77,7 +88,6 @@ export class PlaylistBusiness {
         }
 
     }
-
 
 
     public async getUserPlaylists(token: string): Promise<Playlist[]> {
@@ -122,31 +132,6 @@ export class PlaylistBusiness {
 
     }
 
-    public async getPlaylistByTitle(title: string, token: string) {
-
-        try {
-
-            this.authenticator.getData(token)
-
-            const resultMusic = await this.playlistDatabase.selectPlaylistByTitle(title) 
-
-            if (!title) {
-                throw new InvalidInputError(`"title" is required!`)
-            }
-
-            if (!resultMusic) {
-                throw new InvalidInputError("Playlist not found")
-            }
-
-            this.authenticator.getData(token)
-
-            return resultMusic
-
-        } catch (error) {
-            throw new Error(error.message)
-        }
-
-    }
 
     public async deletePlaylistById(id: string, token: string) {
 
