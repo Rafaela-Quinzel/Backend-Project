@@ -83,14 +83,34 @@ export class MusicController {
         }
     }
 
+    public async addToPlaylist(req: Request, res: Response) {
+
+        try {
+            const { playlist } = req.query as any
+
+            const music_id = req.params.id as any
+
+            const token: string = req.headers.authorization as string
+
+            const result = await musicBusiness.addToPlaylist(music_id, playlist, token)
+
+            res.status(200).send(result)
+
+        } catch (error) {
+            res
+                .status(error.statusCode || 400)
+                .send({ error: error.message })
+        }
+    }
+
 
     public async delMusicById(req: Request, res: Response) {
 
         try {
 
-            const token  = req.headers.authorization as string
+            const token = req.headers.authorization as string
 
-            const id = req.params.id 
+            const id = req.params.id
 
             await musicBusiness.deleteMusicById(id, token)
 
@@ -108,7 +128,7 @@ export class MusicController {
 
         try {
 
-            const token  = req.headers.authorization as string
+            const token = req.headers.authorization as string
 
             const { playlist } = req.query as any
 
@@ -126,7 +146,7 @@ export class MusicController {
     }
 
 
-    public async getAllGenres(req: Request, res: Response):Promise<void> {
+    public async getAllGenres(req: Request, res: Response): Promise<void> {
 
         try {
 

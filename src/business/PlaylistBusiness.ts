@@ -51,42 +51,22 @@ export class PlaylistBusiness {
         }
     }
 
-
-    public async addTrackToPlaylist(token: string, input: AddTrackInputDTO) {
+    public async addTrackToPlaylist(music_id: string, playlist: string, token: string) {
 
         try {
 
-            const tokenData = this.authenticator.getData(token)
+            this.authenticator.getData(token)
 
-            const { music_id, playlist_id } = input
-            this.validator.validateEmptyProperties(input)
-
-
-            const music: Music = await this.musicDatabase.selectMusicById(
+            await this.playlistDatabase.insertTrackToPlaylist(
                 music_id,
-                tokenData.id
+                playlist
             )
 
-            if (!music) {
-                throw new InvalidInputError('Music not found')
-            }
-
-            const playlist: Playlist = await this.playlistDatabase.selectPlaylistById(
-                playlist_id
-            )
-
-            if (!playlist) {
-                throw new InvalidInputError('Playlist not found')
-            }
-
-            await this.playlistDatabase.insertTrackToPlaylist(music_id, playlist_id)
-
+            return { message: "Added to Playlist" }
 
         } catch (error) {
             throw new Error(error.message)
-
         }
-
     }
 
 

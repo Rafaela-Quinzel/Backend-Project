@@ -120,6 +120,24 @@ export class MusicBusiness {
 
     }
 
+    public async addToPlaylist(music_id: string, playlist: string, token: string) {
+
+        try {
+
+            this.authenticator.getData(token)
+
+            await this.musicDatabase.addToPlaylist(
+                music_id,
+                playlist
+            )
+
+            return { message: "Added to Playlist" }
+
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
+
 
     public async deleteMusicById(id: string, token: string) {
 
@@ -151,7 +169,7 @@ export class MusicBusiness {
             throw new Error(error.message)
         }
     }
-    
+
 
     public async getAllGenres(): Promise<string[]> {
 
