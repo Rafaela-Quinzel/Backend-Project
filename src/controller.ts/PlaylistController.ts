@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { PlaylistInputDTO } from "../business/entities/Playlist"
+import { AddTrackInputDTO, PlaylistInputDTO } from "../business/entities/Playlist"
 import { PlaylistBusiness } from "../business/PlaylistBusiness"
 import { MusicDatabase } from "../data/MusicDatabase"
 import { PlaylistDatabase } from "../data/PlaylistDatabase"
@@ -47,15 +47,16 @@ export class PlaylistController {
 
         try {
 
-            const { playlist } = req.query as any
-    
-            const music_id = req.params.id as any
-
             const token: string = req.headers.authorization as string
-            
-            const result = await playlistBusiness.addTrackToPlaylist(music_id, playlist, token)
 
-            res.status(200).send(result)
+            const input: AddTrackInputDTO = {
+                music_id: req.body.music_id,
+                playlist_id: req.body.playlist_id
+            }
+            
+            await playlistBusiness.addTrackToPlaylist(token, input)
+
+            res.status(200).send('Track added successfuly')
 
         } catch (error) {
             res
@@ -89,7 +90,7 @@ export class PlaylistController {
 
         try {
 
-            const {id} = req.params
+            const { id } = req.params
 
             const token = req.headers.authorization as string
 
@@ -104,28 +105,6 @@ export class PlaylistController {
 
         }
     }
-
-    public async getPlaylistByTitle(req: Request, res: Response) {
-
-        try {
-
-            const {title} = req.query as any
-
-            const token = req.headers.authorization as string
-
-            const result = await playlistBusiness.getPlaylistByTitle(title, token)
-            
-
-            res.status(201).send(result)
-
-        } catch (error) {
-            res
-                .status(error.statusCode || 400)
-                .send({ error: error.message })
-
-        }
-    }
-
 
 
     public async delPlaylistById(req: Request, res: Response) {

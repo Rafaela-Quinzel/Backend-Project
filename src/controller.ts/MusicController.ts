@@ -69,29 +69,9 @@ export class MusicController {
 
             const token = req.headers.authorization as string
 
-            const id = req.params.id
+            const id: string = req.params.id
 
             const result = await musicBusiness.getMusicById(token, id)
-
-            res.status(201).send(result)
-
-        } catch (error) {
-            res
-                .status(error.statusCode || 400)
-                .send({ error: error.message })
-
-        }
-    }
-
-
-    public async getMusicByTitle(req: Request, res: Response) {
-
-        try {
-            const { title } = req.query as any
-
-            const token = req.headers.authorization as string
-
-            const result = await musicBusiness.getMusicByTitle(title, token)
 
             res.status(201).send(result)
 

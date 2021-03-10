@@ -1,9 +1,13 @@
 import { BaseDatabase } from "./BaseDataBase"
 import { MySqlError } from "../business/errors/MySqlError"
 import { Playlist } from "../business/entities/Playlist"
+import { Music } from "../business/entities/Music"
+import { GenreDatabase } from "./GenreDatabase";
 
 
 export class PlaylistDatabase extends BaseDatabase {
+
+    private genreDatabase = new GenreDatabase()
 
 
     public async insertPlaylist(playlist: Playlist): Promise<void> {
@@ -55,37 +59,26 @@ export class PlaylistDatabase extends BaseDatabase {
 
             const result = await this.getConnection().raw(`
               SELECT *
-              FROM ${this.TABLES_NAMES.musics} mfs
-              LEFT JOIN ${this.TABLES_NAMES.playlists_tracks} ptf ON mfs.id = ptf.music_id
+              FROM ${this.TABLES_NAMES.musics} mfs 
+              LEFT JOIN ${this.TABLES_NAMES.music_genre} mgf 
+              ON mfs.id = mgf.music_id
+              LEFT JOIN ${this.TABLES_NAMES.genres} gf 
+              ON mgf.genre_id = gf.id
+              LEFT JOIN ${this.TABLES_NAMES.playlists_tracks} ptf 
+              ON mfs.id = ptf.music_id
               WHERE ptf.playlist_id = "${id}";
-           `)
+            `)
 
             const playlist = await this.getConnection().raw(`
-              SELECT * FROM ${this.TABLES_NAMES.playlists}
+              SELECT * 
+              FROM ${this.TABLES_NAMES.playlists}
               WHERE id = "${id}";
-           `)
+            `)
 
             return ([playlist[0], result[0]])
 
         } catch (error) {
             throw new Error(error.sqlMessage || error.message)
-        }
-    }
-    
-
-    public async selectPlaylistByTitle(title: string) {
-
-        try {
-
-            const result = await this.getConnection()
-                .select("*")
-                .from(this.TABLES_NAMES.playlists)
-                .where({ title })
-
-            return result
-
-        } catch (error) {
-            throw new MySqlError(500, error.message)
         }
     }
 
