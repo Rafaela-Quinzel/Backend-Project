@@ -6,7 +6,7 @@ import { Music } from "./entities/Music"
 import { NotFoundError } from "./errors/NotFoundError"
 import { InvalidInputError } from "./errors/InvalidInputError"
 import { PlaylistDatabase } from "../data/PlaylistDatabase"
-import { AddTrackInputDTO, Playlist, PlaylistInputDTO } from "./entities/Playlist"
+import { AddTrackInputDTO, musicsPlaylist, musicsPlaylistInput, Playlist, PlaylistInputDTO } from "./entities/Playlist"
 
 
 
@@ -51,18 +51,54 @@ export class PlaylistBusiness {
         }
     }
 
-    public async addTrackToPlaylist(music_id: string, playlist: string, token: string) {
+    // public async addTrackToPlaylist(music_id: string, playlist_id: string, token: string) {
+
+    //     try {
+
+    //         this.authenticator.getData(token)
+
+    //         await this.playlistDatabase.insertTrackToPlaylist(
+    //             music_id,
+    //             playlist_id
+    //         )
+
+    //         return { message: "Added to Playlist" }
+
+    //     } catch (error) {
+    //         throw new Error(error.message)
+    //     }
+    // }
+
+
+    public addTrackToPlaylist = async (
+        token: string,
+        input: AddTrackInputDTO
+    ) => {
 
         try {
 
-            this.authenticator.getData(token)
+            const userData =this.authenticator.getData(token)
+            const { music_id, playlist_id } = input
+            this.validator.validateEmptyProperties(input)
 
-            await this.playlistDatabase.insertTrackToPlaylist(
+            const music: Music = await this.musicDatabase.selectMusicById(
                 music_id,
-                playlist
+                userData.id
             )
 
-            return { message: "Added to Playlist" }
+            if (!music) {
+                throw new InvalidInputError('Music not found');
+            };
+
+            const playlist: Playlist = await this.playlistDatabase.selectPlaylistById(
+                playlist_id, 
+            )
+
+            if (!playlist) {
+                throw new InvalidInputError('Playlist not found')
+            };
+
+            await this.playlistDatabase.insertTrackToPlaylist(music_id, playlist_id)
 
         } catch (error) {
             throw new Error(error.message)

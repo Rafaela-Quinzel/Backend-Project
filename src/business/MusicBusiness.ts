@@ -52,6 +52,7 @@ export class MusicBusiness {
                 tokenData.id
             )
 
+     
             await this.musicDatabase.insertMusics(music)
 
             return music
@@ -120,7 +121,7 @@ export class MusicBusiness {
 
     }
 
-    public async addToPlaylist(music_id: string, playlist: string, token: string) {
+    public async addToPlaylist(music_id: string, playlist: string[], token: string) {
 
         try {
 
@@ -137,6 +138,11 @@ export class MusicBusiness {
             throw new Error(error.message)
         }
     }
+
+
+
+
+    
 
 
     public async deleteMusicById(id: string, token: string) {

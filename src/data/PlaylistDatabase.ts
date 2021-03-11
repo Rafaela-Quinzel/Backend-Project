@@ -1,6 +1,6 @@
 import { BaseDatabase } from "./BaseDataBase"
 import { MySqlError } from "../business/errors/MySqlError"
-import { Playlist } from "../business/entities/Playlist"
+import { musicsPlaylistInput, Playlist } from "../business/entities/Playlist"
 import { Music } from "../business/entities/Music"
 import { GenreDatabase } from "./GenreDatabase";
 
@@ -16,7 +16,7 @@ export class PlaylistDatabase extends BaseDatabase {
 
             await this.getConnection()
                 .insert({
-                    id: playlist.getId(),
+                    id: playlist.getPlaylistId(),
                     title: playlist.getTitle(),
                     subtitle: playlist.getSubtitle(),
                     date: playlist.getDate(),
@@ -84,13 +84,13 @@ export class PlaylistDatabase extends BaseDatabase {
 
 
 
-    public async insertTrackToPlaylist(music_id: string, playlist: string) {
+    public async insertTrackToPlaylist(music_id: string, playlist_id: string) {
 
         try {
 
             await this.getConnection().raw(`
             INSERT INTO ${this.TABLES_NAMES.playlists_tracks}
-            VALUES ("${music_id}", "${playlist}")
+            VALUES ("${music_id}", "${playlist_id}")
          `)
 
         } catch (error) {

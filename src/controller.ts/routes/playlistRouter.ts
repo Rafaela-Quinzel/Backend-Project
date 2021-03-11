@@ -9,5 +9,6 @@ const playlistController = new PlaylistController()
 playlistRouter.post("/create", playlistController.createPlaylist)
 playlistRouter.get("/", playlistController.getUserPlaylists)
 playlistRouter.get("/:id", playlistController.getPlaylistById)
-playlistRouter.put("/track/:id", playlistController.addTrackToPlaylist)
+playlistRouter.put("/track", playlistController.addTrackToPlaylist)
 playlistRouter.delete("/delete/:id", playlistController.delPlaylistById)
+
