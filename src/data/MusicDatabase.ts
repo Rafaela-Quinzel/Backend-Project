@@ -2,13 +2,15 @@ import { BaseDatabase } from "./BaseDataBase"
 import { Music } from "../business/entities/Music"
 import { MySqlError } from "../business/errors/MySqlError"
 import { GenreDatabase } from "./GenreDatabase"
+import { PlaylistDatabase } from "./PlaylistDatabase"
+import { Playlist } from "../business/entities/Playlist"
 
 
 
 export class MusicDatabase extends BaseDatabase {
 
     private genreDataBase = new GenreDatabase()
-
+   
 
     public async insertMusics(music: Music): Promise<void> {
 
@@ -28,10 +30,8 @@ export class MusicDatabase extends BaseDatabase {
 
             await this.genreDataBase.insertMusicGenres(music.getGenre(), music.getId())
 
-
         } catch (error) {
-            const errorInfo = MySqlError.duplicateEntryHandler(error.message)
-            throw new MySqlError(errorInfo.statusCode, errorInfo.message)
+            throw new MySqlError(500, error.message)
         }
     }
 
@@ -81,20 +81,15 @@ export class MusicDatabase extends BaseDatabase {
         }
     }
 
-    
-    public async addToPlaylist(music_id: string, playlist_id: string): Promise<void> {
+
+    public async addToPlaylist(music_id: string, playlist_id: string[]): Promise<void> {
 
         try {
 
-            let i
-
-            for (i = 0; i < playlist_id.length; i++) {
-
-                await this.getConnection().raw(`
-                 INSERT INTO ${this.TABLES_NAMES.playlists_tracks}
-                 VALUES ("${music_id}", "${playlist_id[i]}")
-              `)
-            }
+            await this.getConnection().raw(`
+                INSERT INTO ${this.TABLES_NAMES.playlists_tracks}
+                VALUES ("${music_id}", "${playlist_id}")
+            `)
 
         } catch (error) {
             throw new Error(error.sqlMessage || error.message)

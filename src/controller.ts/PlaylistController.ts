@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { AddTrackInputDTO, PlaylistInputDTO } from "../business/entities/Playlist"
+import { AddTrackInputDTO, musicsPlaylist, PlaylistInputDTO } from "../business/entities/Playlist"
 import { PlaylistBusiness } from "../business/PlaylistBusiness"
 import { MusicDatabase } from "../data/MusicDatabase"
 import { PlaylistDatabase } from "../data/PlaylistDatabase"
@@ -43,26 +43,51 @@ export class PlaylistController {
     }
 
 
-    public async addTrackToPlaylist(req: Request, res: Response) {
+    public addTrackToPlaylist = async (
+        req: Request,
+        res: Response
+    ): Promise<void> => {
 
         try {
-            const { playlist } = req.query as any
 
-            const music_id = req.params.id as any
+            const token: string = req.headers.authorization!
 
-            const token: string = req.headers.authorization as string
+            const input: AddTrackInputDTO = {
+                music_id: req.body.music_id,
+                playlist_id: req.body.playlist_id
+            }
 
-            const result = await playlistBusiness.addTrackToPlaylist(music_id, playlist, token)
+            await playlistBusiness.addTrackToPlaylist(token, input)
 
-            res.status(200).send(result)
+            res.status(200).send('Track added successfuly')
 
         } catch (error) {
             res
                 .status(error.statusCode || 400)
-                .send({ error: error.message })
+                .send(error.message);
         }
     }
 
+
+    // public async addTrackToPlaylist(req: Request, res: Response) {
+
+    //     try {
+    //         const { music_id } = req.query as any
+
+    //         const playlist_id = req.params.id as any
+
+    //         const token: string = req.headers.authorization as string
+
+    //         const result = await playlistBusiness.addTrackToPlaylist(music_id, playlist_id, token)
+
+    //         res.status(200).send(result)
+
+    //     } catch (error) {
+    //         res
+    //             .status(error.statusCode || 400)
+    //             .send({ error: error.message })
+    //     }
+    // }
 
 
     public async getUserPlaylists(req: Request, res: Response): Promise<void> {
