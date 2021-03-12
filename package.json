@@ -29,10 +29,11 @@
     "@types/jsonwebtoken": "^8.5.0",
     "@types/uuid": "^8.3.0"
   },
-  "scripts": {
-    "dev": "clear && ts-node-dev ./src/index.ts",
+  "scripts": { 
     "start": "tsc && node ./build/src/index.js",
-    "test": "clear && echo \"Running tests...\" && jest"
+    "dev": "clear && ts-node-dev ./src/index.ts",
+    "test": "clear && echo \"Running tests...\" && jest",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
