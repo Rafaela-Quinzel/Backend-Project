@@ -7,6 +7,7 @@ import { NotFoundError } from "./errors/NotFoundError"
 import { InvalidInputError } from "./errors/InvalidInputError"
 import { GenreDatabase } from "../data/GenreDatabase"
 import { Playlist } from "./entities/Playlist"
+import { PlaylistDatabase } from "../data/PlaylistDatabase"
 
 
 
@@ -14,6 +15,7 @@ export class MusicBusiness {
 
     constructor(
         private musicDatabase: MusicDatabase,
+        private playlistDatabase: PlaylistDatabase,
         private idGenerator: IdGenerator,
         private authenticator: Authenticator,
         private validator: Validator
@@ -54,6 +56,7 @@ export class MusicBusiness {
 
      
             await this.musicDatabase.insertMusics(music)
+            
 
             return music
 
@@ -138,11 +141,6 @@ export class MusicBusiness {
             throw new Error(error.message)
         }
     }
-
-
-
-
-    
 
 
     public async deleteMusicById(id: string, token: string) {

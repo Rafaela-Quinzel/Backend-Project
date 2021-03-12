@@ -163,4 +163,20 @@ export class PlaylistBusiness {
             throw new Error(error.message)
         }
     }
+
+
+    public async removeMusicFromPlaylist(music_id: string[], playlist_id: string[], token: string) {
+
+        try {
+
+            this.authenticator.getData(token)
+
+            await this.playlistDatabase.deleteMusicFromPlaylist(music_id, playlist_id) as any
+
+            return { message: "Removed from playlist" }
+
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
 }
