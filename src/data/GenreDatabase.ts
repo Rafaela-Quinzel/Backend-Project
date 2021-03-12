@@ -87,4 +87,6 @@ export class GenreDatabase extends BaseDatabase {
             throw new MySqlError(500, error.message)
         }
     }
+
+    
 }

@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { AddTrackInputDTO, musicsPlaylist, PlaylistInputDTO } from "../business/entities/Playlist"
+import { AddTrackInputDTO, PlaylistInputDTO } from "../business/entities/Playlist"
 import { PlaylistBusiness } from "../business/PlaylistBusiness"
 import { MusicDatabase } from "../data/MusicDatabase"
 import { PlaylistDatabase } from "../data/PlaylistDatabase"
@@ -43,10 +43,7 @@ export class PlaylistController {
     }
 
 
-    public addTrackToPlaylist = async (
-        req: Request,
-        res: Response
-    ): Promise<void> => {
+    public async addTrackToPlaylist (req: Request, res: Response): Promise<void> {
 
         try {
 

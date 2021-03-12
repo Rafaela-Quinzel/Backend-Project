@@ -1,9 +1,7 @@
 import { Request, Response } from "express"
 import { MusicInputDTO, MusicOutputDTO } from "../business/entities/Music"
 import { MusicBusiness } from "../business/MusicBusiness"
-import { PlaylistBusiness } from "../business/PlaylistBusiness"
 import { MusicDatabase } from "../data/MusicDatabase"
-import { PlaylistDatabase } from "../data/PlaylistDatabase"
 import { Authenticator } from "../services/Authenticator"
 import { IdGenerator } from "../services/IdGenerator"
 import { Validator } from "../services/Validator"
@@ -12,7 +10,6 @@ import { Validator } from "../services/Validator"
 
 const musicBusiness = new MusicBusiness(
     new MusicDatabase(),
-    new PlaylistDatabase(),
     new IdGenerator(),
     new Authenticator(),
     new Validator()
@@ -85,6 +82,28 @@ export class MusicController {
 
         }
     }
+
+    public getMusicByAuthorOrTitle = async (req: Request, res: Response): Promise<any> => {
+
+        try {
+            
+            const token: string = req.headers.authorization as string
+
+            const title = req.query.title as string
+
+            const author = req.query.author as string
+
+            const album = req.query.album as string            
+
+            const result = await musicBusiness.getMusicByAuthorOrTitle(token, title, author, album)
+
+            res.status(200).send({ message: "Selected music", result })
+
+        } catch(error) {
+            res.status(error.statusCode || 400).send({error: error.message})
+        }
+    }
+    
 
     public async addToPlaylist(req: Request, res: Response) {
 

@@ -1,15 +1,12 @@
 import { BaseDatabase } from "./BaseDataBase"
 import { MySqlError } from "../business/errors/MySqlError"
-import { musicsPlaylistInput, Playlist } from "../business/entities/Playlist"
-import { Music } from "../business/entities/Music"
+import { Playlist } from "../business/entities/Playlist"
 import { GenreDatabase } from "./GenreDatabase";
 
 
 export class PlaylistDatabase extends BaseDatabase {
 
-    private genreDatabase = new GenreDatabase()
-
-
+    
     public async insertPlaylist(playlist: Playlist): Promise<void> {
 
         try {

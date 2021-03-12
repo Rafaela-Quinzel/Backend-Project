@@ -63,16 +63,7 @@ export interface AddTrackInputDTO {
     playlist_id: string
 }
 
-export interface musicsPlaylist{
-    musicId: string,
-    playlistId: string
-}
 
-export interface musicsPlaylistInput{
-    id:string,
-    musicId: string,
-    playlistId: string
-}
 
 
 

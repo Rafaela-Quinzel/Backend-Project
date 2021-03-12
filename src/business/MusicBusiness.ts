@@ -6,8 +6,6 @@ import { Genre, Music, MusicInputDTO, MusicOutputDTO } from "./entities/Music"
 import { NotFoundError } from "./errors/NotFoundError"
 import { InvalidInputError } from "./errors/InvalidInputError"
 import { GenreDatabase } from "../data/GenreDatabase"
-import { Playlist } from "./entities/Playlist"
-import { PlaylistDatabase } from "../data/PlaylistDatabase"
 
 
 
@@ -15,7 +13,6 @@ export class MusicBusiness {
 
     constructor(
         private musicDatabase: MusicDatabase,
-        private playlistDatabase: PlaylistDatabase,
         private idGenerator: IdGenerator,
         private authenticator: Authenticator,
         private validator: Validator
@@ -64,6 +61,7 @@ export class MusicBusiness {
             throw new Error(error.message)
         }
     }
+
 
     public async getMusics(token: string): Promise<MusicOutputDTO[]> {
 
@@ -123,6 +121,43 @@ export class MusicBusiness {
         }
 
     }
+
+
+    public async getMusicByAuthorOrTitle(token: string, title: string, author: string, album: string) {
+
+        try {
+
+            this.authenticator.getData(token)
+
+            if (!title && !author && !album) {
+                throw new InvalidInputError("Please inform 'title', 'author' or 'album'")
+            }
+
+            let result
+
+            if (title) {
+                result = await this.musicDatabase.getMusicByProperty("title", title)
+
+            } else if (author) {
+                result = await this.musicDatabase.getMusicByProperty("author", author)
+
+            } else {
+                result = await this.musicDatabase.getMusicByProperty("album", album)
+            }
+
+
+            if (!result.length) {
+                throw new InvalidInputError("Title, author or album not found")
+            }
+
+            return result
+
+        } catch (error) {
+            throw new Error(error.message)
+
+        }
+    }
+
 
     public async addToPlaylist(music_id: string, playlist: string[], token: string) {
 
