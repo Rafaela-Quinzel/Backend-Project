@@ -4,7 +4,6 @@ import dotenv from "dotenv"
 
 dotenv.config()
 
-
 export abstract class BaseDatabase {
 
     private static connection: Knex | null = null
@@ -27,7 +26,7 @@ export abstract class BaseDatabase {
                 client: "mysql",
                 connection: {
                     host: process.env.DB_HOST,
-                    port: Number(process.env.PORT || "3306"),
+                    port: Number(process.env.DB_PORT || "3306"),
                     user: process.env.DB_USER,
                     password: process.env.DB_PASSWORD,
                     database: process.env.DB_NAME,
