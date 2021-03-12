@@ -69,27 +69,6 @@ export class PlaylistController {
     }
 
 
-    // public async addTrackToPlaylist(req: Request, res: Response) {
-
-    //     try {
-    //         const { music_id } = req.query as any
-
-    //         const playlist_id = req.params.id as any
-
-    //         const token: string = req.headers.authorization as string
-
-    //         const result = await playlistBusiness.addTrackToPlaylist(music_id, playlist_id, token)
-
-    //         res.status(200).send(result)
-
-    //     } catch (error) {
-    //         res
-    //             .status(error.statusCode || 400)
-    //             .send({ error: error.message })
-    //     }
-    // }
-
-
     public async getUserPlaylists(req: Request, res: Response): Promise<void> {
 
         try {
@@ -141,6 +120,28 @@ export class PlaylistController {
             await playlistBusiness.deletePlaylistById(id, token)
 
             res.status(200).send("Playlist deleted")
+
+        } catch (error) {
+            res
+                .status(error.statusCode || 400)
+                .send({ error: error.message })
+        }
+    }
+
+
+    public async removeMusicFromPlaylist(req: Request, res: Response) {
+
+        try {
+
+            const token = req.headers.authorization as string
+
+            const { playlist_id } = req.query as any
+
+            const music_id = req.params.id as any
+
+            await playlistBusiness.removeMusicFromPlaylist(music_id, playlist_id, token)
+
+            res.status(200).send("Music deleted")
 
         } catch (error) {
             res

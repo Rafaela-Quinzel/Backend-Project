@@ -119,4 +119,20 @@ export class PlaylistDatabase extends BaseDatabase {
             throw new MySqlError(500, error.message)
         }
     }
+
+    
+    public async deleteMusicFromPlaylist(music_id: string[], playlist_id: string[]): Promise<void> {
+
+        try {
+
+            await this.getConnection().raw(`
+               DELETE 
+               FROM ${this.TABLES_NAMES.playlists_tracks}
+               WHERE music_id = "${music_id}"
+            `)
+
+        } catch (error) {
+            throw new MySqlError(500, error.message)
+        }
+    }
 }

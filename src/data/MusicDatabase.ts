@@ -10,7 +10,8 @@ import { Playlist } from "../business/entities/Playlist"
 export class MusicDatabase extends BaseDatabase {
 
     private genreDataBase = new GenreDatabase()
-   
+    private playlistDataBase = new PlaylistDatabase()
+
 
     public async insertMusics(music: Music): Promise<void> {
 
@@ -101,22 +102,22 @@ export class MusicDatabase extends BaseDatabase {
 
         try {
 
-            await this.getConnection().raw(`
-            DELETE 
-            FROM ${this.TABLES_NAMES.playlists_tracks}
-            WHERE music_id = '${id}';
-        `)
-
             await await this.getConnection().raw(`
                DELETE 
                FROM ${this.TABLES_NAMES.music_genre}
                WHERE music_id = '${id}';
             `)
 
+            await await this.getConnection().raw(`
+               DELETE 
+               FROM ${this.TABLES_NAMES.playlists_tracks}
+               WHERE music_id = '${id}';
+            `)
+
             await this.getConnection().raw(`
-                DELETE 
-                FROM ${this.TABLES_NAMES.musics}
-                WHERE id = '${id}';
+              DELETE 
+              FROM ${this.TABLES_NAMES.musics}
+              WHERE id = '${id}';
             `)
 
         } catch (error) {

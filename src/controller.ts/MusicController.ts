@@ -1,7 +1,9 @@
 import { Request, Response } from "express"
 import { MusicInputDTO, MusicOutputDTO } from "../business/entities/Music"
 import { MusicBusiness } from "../business/MusicBusiness"
+import { PlaylistBusiness } from "../business/PlaylistBusiness"
 import { MusicDatabase } from "../data/MusicDatabase"
+import { PlaylistDatabase } from "../data/PlaylistDatabase"
 import { Authenticator } from "../services/Authenticator"
 import { IdGenerator } from "../services/IdGenerator"
 import { Validator } from "../services/Validator"
@@ -10,6 +12,7 @@ import { Validator } from "../services/Validator"
 
 const musicBusiness = new MusicBusiness(
     new MusicDatabase(),
+    new PlaylistDatabase(),
     new IdGenerator(),
     new Authenticator(),
     new Validator()
@@ -32,7 +35,7 @@ export class MusicController {
             }
 
             await musicBusiness.createMusic(token, input)
-
+          
             res.status(201).send("Music inserted successfully")
 
         } catch (error) {
