@@ -6,7 +6,7 @@ import { Music } from "./entities/Music"
 import { NotFoundError } from "./errors/NotFoundError"
 import { InvalidInputError } from "./errors/InvalidInputError"
 import { PlaylistDatabase } from "../data/PlaylistDatabase"
-import { AddTrackInputDTO, musicsPlaylist, musicsPlaylistInput, Playlist, PlaylistInputDTO } from "./entities/Playlist"
+import { AddTrackInputDTO, Playlist, PlaylistInputDTO } from "./entities/Playlist"
 
 
 
@@ -51,29 +51,8 @@ export class PlaylistBusiness {
         }
     }
 
-    // public async addTrackToPlaylist(music_id: string, playlist_id: string, token: string) {
 
-    //     try {
-
-    //         this.authenticator.getData(token)
-
-    //         await this.playlistDatabase.insertTrackToPlaylist(
-    //             music_id,
-    //             playlist_id
-    //         )
-
-    //         return { message: "Added to Playlist" }
-
-    //     } catch (error) {
-    //         throw new Error(error.message)
-    //     }
-    // }
-
-
-    public addTrackToPlaylist = async (
-        token: string,
-        input: AddTrackInputDTO
-    ) => {
+    public async addTrackToPlaylist (token: string, input: AddTrackInputDTO) {
 
         try {
 
@@ -87,7 +66,7 @@ export class PlaylistBusiness {
             )
 
             if (!music) {
-                throw new InvalidInputError('Music not found');
+                throw new InvalidInputError('Music not found')
             };
 
             const playlist: Playlist = await this.playlistDatabase.selectPlaylistById(

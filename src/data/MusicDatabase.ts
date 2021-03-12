@@ -10,9 +10,7 @@ import { Playlist } from "../business/entities/Playlist"
 export class MusicDatabase extends BaseDatabase {
 
     private genreDataBase = new GenreDatabase()
-    private playlistDataBase = new PlaylistDatabase()
-
-
+  
     public async insertMusics(music: Music): Promise<void> {
 
         try {
@@ -79,6 +77,24 @@ export class MusicDatabase extends BaseDatabase {
 
         } catch (error) {
             throw new MySqlError(500, error.message)
+        }
+    }
+
+
+    public async getMusicByProperty(key: string, value: string): Promise<Music[]> {
+
+        try {
+            const result = await await this.getConnection()
+            .select("*")
+            .from(this.TABLES_NAMES.musics)
+            .where(key, "like" ,`%${value}%`)
+            
+            await this.genreDataBase.selectGenreByMusic(value)
+
+            return result
+                      
+        } catch (error) {
+            throw new Error(error.sqlMessage || error.message)
         }
     }
 
