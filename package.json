@@ -17,9 +17,7 @@
     "ts-jest": "^26.5.3",
     "ts-node-dev": "^1.1.1",
     "typescript": "^4.1.5",
-    "uuid": "^8.3.2"
-  },
-  "devDependencies": {
+    "uuid": "^8.3.2",
     "@types/axios": "^0.14.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.10",
@@ -29,6 +27,7 @@
     "@types/jsonwebtoken": "^8.5.0",
     "@types/uuid": "^8.3.0"
   },
+  "devDependencies": {},
   "scripts": { 
     "start": "tsc && node ./build/src/index.js",
     "dev": "clear && ts-node-dev ./src/index.ts",
