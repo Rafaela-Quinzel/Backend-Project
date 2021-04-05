@@ -1,33 +1,25 @@
-<h1 style="color: orange;"> Backend-Project</h1>
+# Backend-Project
 
-<p style='color:red'>This is some red text.</p>
-<font color="red">This is some text!</font>
-These are <b style='color:red'>red words</b>.
+Projeto Fullstack - Repositório Backend
 
-<h3 style="color: orange; border-bottom: 1px solid; width: 290px;">Projeto Fullstack - Repositório Backend<h3>
+Este projeto foi desenvolvido no curso da **Labenu** é uma API com funcionalidades básicas para uma streaming de músicas.
 
-<p style="margin-top: 5px; font-size: 16px;">
-   Este projeto foi desenvolvido no curso da <strong>Labenu</strong> é uma API com funcionalidades básicas para uma streaming de músicas.
-</p> 
+Para utilizar este projeto você precisa dos primeiros passos abaixo:</p>
 
-<p style="margin-top: 4%;">Para utilizar este projeto você precisa dos primeiros passos abaixo:</p>
-<ul style="font-size: 14px;">
-    <li>Clonar este repositório</li>
-    <li>Executar o comando npm install no terminal</li>
-    <li>Criar um arquivo .env na raiz do projeto e preencher com os valores corretos.</li>
-</ul>
-<p style="font-size: 14px; margin-left: 45px">Exemplo:</p>
-    <div style="font-size: 14px; margin-left: 80px">
-        <p># endereço do host<p>
-        <p>DB_HOST = 00.000.000.000</p>
-        <p>PORT = 0000</p>
-        <p>DB_USER = nome-usuario</p>
-        <p>DB_PASSWORD = 1a2b3c4d5e</p>
-        <p>DB_NAME = nome-banco</p>
-        <p>JWT_KEY = chave</p>
-        <p>JWT_EXPIRES_IN = 1d</p>
-        <p>BCRYPT_COST = 12</p>
-    </div>
+- Clonar este repositório
+- Executar o comando npm install no terminal
+- Criar um arquivo .env na raiz do projeto e preencher com os valores corretos.
+```
+   #endereço do host
+   DB_HOST = 00.000.000.000
+   PORT = 0000</p>
+   DB_USER = nome-usuario
+   DB_PASSWORD = 1a2b3c4d5e
+   DB_NAME = nome-banco
+   JWT_KEY = chave
+   JWT_EXPIRES_IN = 1d
+   BCRYPT_COST = 12
+````
 <div style="margin-top: 5%; font-size: 14px;">
     <p style="">
       No arquivo <strong style="color: rgb(43, 109, 170);">ProjetoFULLSTACK.sql</strong> estão todas as tabelas que foram criadas para guardar as informações no banco de dados.
