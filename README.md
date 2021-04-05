@@ -15,6 +15,7 @@
 <p style="font-size: 14px; margin-left: 45px">Exemplo:</p>
 <code style="font-size: 14px;">
     <div style="margin-left: 80px">
+       ````
         <p># endereço do host<p>
         <p>DB_HOST = 00.000.000.000</p>
         <p>PORT = 0000</p>
@@ -24,6 +25,7 @@
         <p>JWT_KEY = chave</p>
         <p>JWT_EXPIRES_IN = 1d</p>
         <p>BCRYPT_COST = 12</p>
+       ````
     </div>
 </code>
 
