@@ -1,5 +1,7 @@
 # Backend-Project
 
+![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+)
+
 Projeto Fullstack - Repositório Backend
 
 Este projeto foi desenvolvido no curso da **Labenu** é uma API com funcionalidades básicas para uma streaming de músicas.
