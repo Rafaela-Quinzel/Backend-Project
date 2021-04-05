@@ -13,6 +13,7 @@
     <li>Criar um arquivo .env na raiz do projeto e preencher com os valores corretos.</li>
 </ul>
 <p style="font-size: 14px; margin-left: 45px">Exemplo:</p>
+```js
     <div style="font-size: 14px; margin-left: 80px">
         <p># endereço do host<p>
         <p>DB_HOST = 00.000.000.000</p>
@@ -24,7 +25,7 @@
         <p>JWT_EXPIRES_IN = 1d</p>
         <p>BCRYPT_COST = 12</p>
     </div>
-
+```js
 <div style="margin-top: 5%; font-size: 14px;">
     <p style="">
       No arquivo <strong style="color: rgb(43, 109, 170);">ProjetoFULLSTACK.sql</strong> estão todas as tabelas que foram criadas para guardar as informações no banco de dados.
