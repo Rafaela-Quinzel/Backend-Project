@@ -20,6 +20,12 @@ Para utilizar este projeto você precisa dos primeiros passos abaixo:</p>
    JWT_EXPIRES_IN = 1d
    BCRYPT_COST = 12
 ````
+
+No arquivo `ProjetoFULLSTACK.sql` estão todas as tabelas que foram criadas para guardar as informações no banco de dados.
+ 
+Para criar estas tabelas no seu banco de dados basta clicar em 
+ `Run SQL` 
+e as tabelas serão criadas.
 <div style="margin-top: 5%; font-size: 14px;">
     <p style="">
       No arquivo <strong style="color: rgb(43, 109, 170);">ProjetoFULLSTACK.sql</strong> estão todas as tabelas que foram criadas para guardar as informações no banco de dados.
