@@ -1,5 +1,9 @@
 <h1 style="color: orange;"> Backend-Project</h1>
 
+<p style='color:red'>This is some red text.</p>
+<font color="red">This is some text!</font>
+These are <b style='color:red'>red words</b>.
+
 <h3 style="color: orange; border-bottom: 1px solid; width: 290px;">Projeto Fullstack - Repositório Backend<h3>
 
 <p style="margin-top: 5px; font-size: 16px;">
