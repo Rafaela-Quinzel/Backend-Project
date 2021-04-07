@@ -30,7 +30,7 @@ Para criar estas tabelas no seu banco de dados basta clicar em `Run SQL` e as ta
 - npm run dev
 - npm run test (testes com jest)
 
-**Endpoints existentes neste projeto:** são divididos em três partes: endpoints relacionados aos usuários, as músicas e as playlists.
+**Os endpoints existentes neste projeto são divididos em três partes:** endpoints relacionados aos usuários, as músicas e as playlists.
 
 
 ***Endpoints de Usuários:***
