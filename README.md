@@ -257,7 +257,7 @@ Authorization(token)
 ```json
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImZiNTEzMTIxLTE0MTEtNDZiZC1hMjEwLTQ0OGQ2YjA0ODIzZSIsImlhdCI6MTYxNTA2NTU3MywiZXhwIjoxNjE1MTUxOTczfQ.IuXjGbKiAMZZmTKhzWKD3RsboN7qRwOO7z4xUqupgso
 ```
-<br/>
+
 **Bibliotecas, Frameworks e recursos utilizados neste projeto:**
 
 <ul style="font-size: 14px; margin-left: 25px;">
