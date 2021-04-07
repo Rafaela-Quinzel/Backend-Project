@@ -76,7 +76,7 @@ Body Resposta:
 ```json
 "token": {
 "accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImZiNTEzMTIxLTE0MTEtNDZiZC1hMjEwLTQ0OGQ2YjA0ODIzZSIsImlhdCI6MTYxNzY2MDkxNiwiZXhwIjoxNjE3NzQ3MzE2fQ.QYDQ7IOi3yaSjNpu_Nwew00Pcnlw593KkBSZJ4VYZNc",
-"username":"Rafaela"
+"username":"usuario"
 }
 ```
 
